@@ -3,6 +3,13 @@ import SectionReveal from "./SectionReveal";
 export default function Hackathons() {
     const hacks = [
         {
+            name: "Hack-A-War Hackathon",
+            place: "1st Place",
+            location: "MSRIT Bangalore",
+            date: "Apr 2026",
+            color: "text-pacman-yellow" // Gold/1st place
+        },
+        {
             name: "Smart India Hackathon (SIH) 2024",
             place: "Runner-up",
             location: "LPU Punjab",

@@ -80,7 +80,7 @@ export default function Hero() {
                     </h1>
                     <div className="overflow-hidden whitespace-nowrap border-r-4 border-ghost-pink animate-[typing_3.5s_steps(40,end)_infinite,blink-caret_0.75s_step-end_infinite] inline-block">
                         <p className="font-arcade text-xs md:text-sm text-ghost-pink tracking-widest">
-                            FULL STACK DEVELOPER | AI ENTHUSIAST
+                            FULL STACK DEVELOPER | AI/ML ENGINEER
                         </p>
                     </div>
                 </div>

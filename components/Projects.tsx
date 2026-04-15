@@ -4,6 +4,14 @@ import SectionReveal from "./SectionReveal";
 export default function Projects() {
     const projects = [
         {
+            title: "ACCPS",
+            subtitle: "AI Content Copyright System",
+            tech: ["Next.js", "FastAPI", "Sepolia", "Remix", "Scikit-Learn"],
+            desc: "Blockchain-based product authentication and counterfeit detection using lightweight TF-IDF and perceptual hashing.",
+            link: "https://github.com/Byte-Sized-Brain/accps",
+            demoLink: "https://accps.vercel.app/"
+        },
+        {
             title: "Emotisense",
             subtitle: "AI-Powered Emotion Analysis",
             tech: ["React", "Node.js", "Python", "BERT", "ViT"],
@@ -22,7 +30,8 @@ export default function Projects() {
             subtitle: "Decentralized Academic Records",
             tech: ["React", "Solidity", "Ether.js", "IPFS"],
             desc: "A secure, blockchain-based platform for storing and verifying academic records, changing credential verification preventing fraud.",
-            link: "#" // Placeholder
+            link: "https://github.com/naomiiAP/eduvault",
+            demoLink: "https://eduvault-woad.vercel.app/"
         },
         {
             title: "AgriAssist",
@@ -61,12 +70,24 @@ export default function Projects() {
                                     ))}
                                 </div>
 
-                                <Link
-                                    href={project.link}
-                                    className="block w-full text-center font-arcade text-sm bg-ghost-red text-black py-3 rounded hover:bg-white hover:text-red-600 transition-colors"
-                                >
-                                    VIEW SOURCE
-                                </Link>
+                                <div className="flex gap-3">
+                                    <Link
+                                        href={project.link}
+                                        target="_blank"
+                                        className="flex-1 text-center font-arcade text-sm bg-ghost-red text-black py-3 rounded hover:bg-white hover:text-red-600 transition-colors"
+                                    >
+                                        SOURCE
+                                    </Link>
+                                    {project.demoLink && (
+                                        <Link
+                                            href={project.demoLink}
+                                            target="_blank"
+                                            className="flex-1 text-center font-arcade text-sm border-2 border-ghost-cyan text-ghost-cyan py-3 rounded hover:bg-ghost-cyan hover:text-black transition-colors flex items-center justify-center"
+                                        >
+                                            DEMO
+                                        </Link>
+                                    )}
+                                </div>
                             </div>
                         ))}
                     </div>

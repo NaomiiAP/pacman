@@ -12,10 +12,10 @@ export default function About() {
                     <div className="flex flex-col md:flex-row items-center gap-12 bg-gray-900/50 p-8 rounded-xl border-2 border-ghost-pink">
                         <div className="w-full md:w-2/3 space-y-6">
                             <p className="font-vt323 text-xl md:text-2xl text-gray-300 leading-relaxed">
-                                I am an aspiring software engineer specializing in <span className="text-ghost-cyan">Full Stack Development</span> and <span className="text-ghost-cyan">Artificial Intelligence</span>.
+                                I am <span className="text-ghost-cyan">a Full Stack Developer and AI/ML Engineer</span>.
                             </p>
                             <p className="font-vt323 text-xl md:text-2xl text-gray-300 leading-relaxed">
-                                Currently studying Information Science and Engineering at Ramaiah Institute of Technology. I love building AI-powered web applications and exploring blockchain technology.
+                                Building intelligent systems with Agentic Systems, RAG, multimodal AI, and scalable full-stack solutions.
                             </p>
                             {/* Badges removed */}
                         </div>

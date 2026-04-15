@@ -15,7 +15,7 @@ const vt323 = VT323({
 });
 
 export const metadata: Metadata = {
-  title: "Pacman theme",
+  title: "Naomi P | Portfolio",
   description: "Pacman Themed Portfolio",
 };
 
