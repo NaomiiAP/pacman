@@ -3,6 +3,20 @@ import SectionReveal from "./SectionReveal";
 export default function Hackathons() {
     const hacks = [
         {
+            name: "Google X Deepstation Hackathon",
+            place: "1st Place",
+            location: "MSRIT Bangalore",
+            date: "May 2026",
+            color: "text-pacman-yellow"
+        },
+        {
+            name: "Athernex Hackathon",
+            place: "2nd Place",
+            location: "BMSCE Bangalore",
+            date: "Apr 2026",
+            color: "text-gray-300"
+        },
+        {
             name: "Hack-A-War Hackathon",
             place: "1st Place",
             location: "MSRIT Bangalore",
