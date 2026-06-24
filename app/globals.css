@@ -1,65 +1,55 @@
 @import "tailwindcss";
 
 :root {
-  --background: #000000;
-  --foreground: #ffffff;
-  --pacman-yellow: #ffff00;
-  --ghost-red: #ff0000;
-  --ghost-pink: #ffb8ff;
-  --ghost-cyan: #00ffff;
-  --ghost-orange: #ffb852;
-  --maze-blue: #2121de;
+  --background: #fdfbf7;
+  --foreground: #000000;
+  --brutal-yellow: #facc15;
+  --brutal-red: #ef4444;
+  --brutal-pink: #f472b6;
+  --brutal-cyan: #22d3ee;
+  --brutal-orange: #f97316;
+  --brutal-blue: #3b82f6;
+  --brutal-green: #22c55e;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --color-pacman-yellow: var(--pacman-yellow);
-  --color-ghost-red: var(--ghost-red);
-  --color-ghost-pink: var(--ghost-pink);
-  --color-ghost-cyan: var(--ghost-cyan);
-  --color-ghost-orange: var(--ghost-orange);
-  --color-maze-blue: var(--maze-blue);
+  --color-brutal-yellow: var(--brutal-yellow);
+  --color-brutal-red: var(--brutal-red);
+  --color-brutal-pink: var(--brutal-pink);
+  --color-brutal-cyan: var(--brutal-cyan);
+  --color-brutal-orange: var(--brutal-orange);
+  --color-brutal-blue: var(--brutal-blue);
+  --color-brutal-green: var(--brutal-green);
 
-  --font-arcade: var(--font-press-start-2p);
-  --font-vt323: var(--font-vt323);
+  --font-space: var(--font-space-grotesk);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-vt323);
+  font-family: var(--font-space);
+  /* Custom pattern for a slightly noisy neobrutalist background */
+  background-image: radial-gradient(#000000 1px, transparent 1px);
+  background-size: 20px 20px;
 }
 
-/* CRT Effect Animation if needed later */
-@keyframes scanline {
-  0% {
-    transform: translateY(0);
-  }
-
-  100% {
-    transform: translateY(100vh);
-  }
+/* Base styles for neobrutalist cards */
+.brutal-card {
+  @apply bg-white border-4 border-black rounded-none shadow-[8px_8px_0px_rgba(0,0,0,1)] transition-transform duration-200 hover:-translate-y-1 hover:-translate-x-1 hover:shadow-[12px_12px_0px_rgba(0,0,0,1)];
 }
 
-@keyframes typing {
-  from {
-    width: 0
-  }
-
-  to {
-    width: 100%
-  }
+.brutal-btn {
+  @apply px-6 py-3 bg-brutal-yellow border-4 border-black font-bold uppercase tracking-widest text-black shadow-[4px_4px_0px_rgba(0,0,0,1)] transition-all duration-200 hover:-translate-y-1 hover:-translate-x-1 hover:shadow-[8px_8px_0px_rgba(0,0,0,1)] active:translate-y-1 active:translate-x-1 active:shadow-[0px_0px_0px_rgba(0,0,0,1)];
 }
 
-@keyframes blink-caret {
-
-  from,
-  to {
-    border-color: transparent
-  }
-
-  50% {
-    border-color: var(--ghost-pink);
-  }
+/* Marquee Animation */
+@keyframes marquee {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-100%); }
 }
+
+.animate-marquee {
+  animation: marquee 20s linear infinite;
+}

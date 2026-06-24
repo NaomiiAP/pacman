@@ -7,77 +7,77 @@ export default function Hackathons() {
             place: "1st Place",
             location: "MSRIT Bangalore",
             date: "May 2026",
-            color: "text-pacman-yellow"
+            color: "bg-brutal-yellow"
         },
         {
             name: "Athernex Hackathon",
             place: "2nd Place",
             location: "BMSCE Bangalore",
             date: "Apr 2026",
-            color: "text-gray-300"
+            color: "bg-white"
         },
         {
             name: "Hack-A-War Hackathon",
             place: "1st Place",
             location: "MSRIT Bangalore",
             date: "Apr 2026",
-            color: "text-pacman-yellow" // Gold/1st place
+            color: "bg-brutal-yellow"
         },
         {
             name: "Smart India Hackathon (SIH) 2024",
             place: "Runner-up",
             location: "LPU Punjab",
             date: "Dec 2024",
-            color: "text-gray-300" // Silver/Runner up
+            color: "bg-white"
         },
         {
             name: "Mindscape Hackathon",
             place: "2nd Place",
             location: "BNMIT Bangalore",
             date: "Jul 2025",
-            color: "text-gray-300"
+            color: "bg-white"
         },
         {
             name: "Code-A-Thon Hackathon",
             place: "3rd Place",
             location: "MIT Bangalore",
             date: "Apr 2025",
-            color: "text-amber-700" // Bronze
+            color: "bg-brutal-pink"
         },
         {
             name: "Code Red ’25",
             place: "Consolation Prize",
             location: "BMSIT",
             date: "Jan 2025",
-            color: "text-ghost-pink"
+            color: "bg-brutal-cyan"
         }
     ];
 
     return (
-        <section id="hackathons" className="py-20 px-4 bg-black relative">
+        <section id="hackathons" className="py-20 px-4 bg-brutal-red border-b-8 border-black relative">
             <SectionReveal>
                 <div className="max-w-5xl mx-auto">
-                    <h2 className="text-3xl md:text-4xl font-arcade text-ghost-cyan mb-12 text-center">
+                    <h2 className="text-5xl md:text-7xl font-black text-black mb-16 text-center uppercase drop-shadow-[4px_4px_0_#fff]">
                         ACHIEVEMENTS
                     </h2>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                         {hacks.map((hack, idx) => (
-                            <div key={idx} className="bg-gray-900/50 border border-ghost-cyan p-6 rounded relative overflow-hidden group hover:bg-gray-900 transition-all">
-                                <div className="absolute top-0 right-0 p-2 bg-ghost-cyan text-black font-arcade text-xs">
+                            <div key={idx} className={`brutal-card p-6 relative ${hack.color} ${idx % 2 === 0 ? 'rotate-1' : '-rotate-1'} hover:rotate-0`}>
+                                <div className="absolute top-0 right-0 px-3 py-1 bg-black text-white font-bold text-sm border-l-4 border-b-4 border-black">
                                     {hack.date}
                                 </div>
 
-                                <h3 className="font-arcade text-lg text-white mt-4 mb-2 group-hover:text-pacman-yellow transition-colors">
+                                <h3 className="font-black text-2xl text-black mt-6 mb-2 uppercase border-b-4 border-black pb-2">
                                     {hack.name}
                                 </h3>
 
-                                <div className="flex items-center gap-3 mb-2">
-                                    <div className="w-2 h-2 bg-ghost-red rounded-full animate-ping" />
-                                    <span className="font-vt323 text-gray-400">{hack.location}</span>
+                                <div className="flex items-center gap-2 mb-4 mt-4">
+                                    <div className="w-3 h-3 bg-black rounded-full" />
+                                    <span className="font-bold text-lg text-black">{hack.location}</span>
                                 </div>
 
-                                <div className={`font-arcade text-xl ${hack.color} mt-4 border-t border-gray-800 pt-2`}>
+                                <div className="font-black text-2xl text-black bg-white inline-block px-4 py-2 border-4 border-black shadow-[4px_4px_0_#000]">
                                     {hack.place}
                                 </div>
                             </div>

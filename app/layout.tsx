@@ -1,22 +1,16 @@
 import type { Metadata } from "next";
-import { Press_Start_2P, VT323 } from "next/font/google";
+import { Space_Grotesk } from "next/font/google";
 import "./globals.css";
 
-const pressStart2P = Press_Start_2P({
-  weight: "400",
-  variable: "--font-press-start-2p",
-  subsets: ["latin"],
-});
-
-const vt323 = VT323({
-  weight: "400",
-  variable: "--font-vt323",
+const spaceGrotesk = Space_Grotesk({
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-space-grotesk",
   subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
   title: "Naomi P | Portfolio",
-  description: "Pacman Themed Portfolio",
+  description: "Neobrutalist Portfolio",
 };
 
 export default function RootLayout({
@@ -25,11 +19,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="scroll-smooth">
       <body
-        className={`${pressStart2P.variable} ${vt323.variable} antialiased bg-black text-white font-vt323`}
+        className={`${spaceGrotesk.variable} antialiased bg-[var(--background)] text-black font-space`}
       >
-        <div className="crtscreen pointer-events-none fixed inset-0 z-50 h-full w-full bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[length:100%_4px,3px_100%] bg-repeat pointer-events-none"></div>
         {children}
       </body>
     </html>
