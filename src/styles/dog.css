@@ -324,8 +324,20 @@
   animation: bob 0.28s ease-in-out infinite;
 }
 
-.dog-anchor.is-sit .leg-front,
-.dog-anchor.is-sit .leg-back,
+.dog-anchor.is-sit .dog-flip {
+  translate: 0 12px;
+}
+
+.dog-anchor.is-sit .leg-back {
+  transform: rotate(38deg);
+  transform-origin: 70px 104px;
+}
+
+.dog-anchor.is-sit .leg-front {
+  transform: rotate(14deg);
+  transform-origin: 126px 106px;
+}
+
 .dog-anchor.is-sleep .leg-front,
 .dog-anchor.is-sleep .leg-back {
   transform: rotate(62deg);
@@ -678,8 +690,8 @@
 }
 
 @keyframes step {
-  from { transform: rotate(22deg); }
-  to { transform: rotate(-18deg); }
+  from { transform: rotate(36deg); }
+  to { transform: rotate(-30deg); }
 }
 
 @keyframes wag {

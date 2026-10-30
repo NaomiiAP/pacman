@@ -28,8 +28,8 @@ Checked and left as-is:
 
 ## Visual
 
-7. Sit is wrong. The legs rotate about 62 degrees and stick out sideways, so the pup looks like it is sprawling rather than sitting. Sleep (closed eye, lower body, Zzz) and facing left both read clearly. The walk stride is real but small.
-8. Kitbranch's tail reads as a stray "3" next to the face, which breaks the set of spirit drawings.
+7. Sit is wrong. The legs rotate about 62 degrees and stick out sideways, so the pup looks like it is sprawling rather than sitting. Sleep (closed eye, lower body, Zzz) and facing left both read clearly. The walk stride is real but small. Fixed: sitting drops the body and folds the legs a little, and the walk swing is wider.
+8. Kitbranch's tail reads as a stray "3" next to the face, which breaks the set of spirit drawings. Fixed: one moss branch-tail, plus blush so it matches the other spirits.
 
 ## Performance
 
