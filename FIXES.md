@@ -23,8 +23,8 @@ Checked and left as-is:
 
 ## Mobile
 
-5. The fixed corner puppy and its speech bubble cover real text while scrolling at 390px. "Problem Solving" and part of the AgriAssist card sit underneath the bubble.
-6. The sticky nav is two rows tall on a phone. Jumping to a section still leaves the heading under that bar. `scroll-margin-top: 6rem` is shorter than the wrapped nav.
+5. The fixed corner puppy and its speech bubble cover real text while scrolling at 390px. "Problem Solving" and part of the AgriAssist card sit underneath the bubble. Fixed: on narrow screens the page keeps a right gutter and the puppy is smaller, so body text stays clear of the hint.
+6. The sticky nav is two rows tall on a phone. Jumping to a section still leaves the heading under that bar. `scroll-margin-top: 6rem` is shorter than the wrapped nav. Fixed: scroll padding on small screens is 10.5rem.
 
 ## Visual
 
