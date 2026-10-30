@@ -1,0 +1,732 @@
+.dog-root {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  background: #120c22;
+  color: #fff8ee;
+  overflow: hidden;
+}
+
+.dog-root[hidden] {
+  display: none !important;
+}
+
+.dog-scroll {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background: transparent;
+  scrollbar-color: #e8b84a transparent;
+}
+
+.dog-stage {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.dog-stage button {
+  pointer-events: auto;
+}
+
+.layer,
+.sky-bg,
+.hills-bg,
+.ground,
+.grass-bg,
+.cloud,
+.firefly,
+.leaf,
+.trails,
+.scent {
+  pointer-events: none;
+}
+
+.layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+}
+
+.layer.sky,
+.layer.hills,
+.layer.village {
+  width: 5200px;
+}
+
+.layer.grass {
+  width: 6800px;
+}
+
+.sky-bg,
+.hills-bg,
+.ground,
+.grass-bg {
+  position: absolute;
+  inset: 0;
+}
+
+.dog-root[data-sky='golden'] .sky-bg {
+  background: linear-gradient(#f2b07a 0%, #e07a45 46%, #6a3a68 100%);
+}
+
+.dog-root[data-sky='dusk'] .sky-bg {
+  background: linear-gradient(#1a1240 0%, #6a3a68 48%, #e07a45 100%);
+}
+
+.dog-root[data-sky='night'] .sky-bg {
+  background: linear-gradient(#070614 0%, #161033 58%, #2a2058 100%);
+}
+
+.stars {
+  opacity: 0;
+}
+
+.dog-root[data-sky='night'] .stars {
+  opacity: 1;
+}
+
+.lantern-glow {
+  opacity: 0.25;
+}
+
+.dog-root[data-sky='night'] .lantern-glow {
+  opacity: 1;
+}
+
+.hills-bg {
+  background:
+    radial-gradient(ellipse 420px 180px at 12% 78%, #4e6b52 70%, transparent 72%),
+    radial-gradient(ellipse 520px 200px at 38% 86%, #3d5a45 70%, transparent 72%),
+    radial-gradient(ellipse 480px 190px at 68% 80%, #5f7d52 70%, transparent 72%),
+    radial-gradient(ellipse 500px 210px at 92% 88%, #2e4636 70%, transparent 72%);
+}
+
+.ground {
+  top: auto;
+  height: 38%;
+  background:
+    radial-gradient(140px 46px at 6% 0, #6e8b5a 58%, transparent 60%),
+    radial-gradient(180px 50px at 24% 0, #5f7d52 58%, transparent 60%),
+    radial-gradient(160px 48px at 46% 0, #6e8b5a 58%, transparent 60%),
+    radial-gradient(200px 54px at 70% 0, #4e6a48 58%, transparent 60%),
+    radial-gradient(180px 50px at 90% 0, #5f7d52 58%, transparent 60%),
+    linear-gradient(#5c7a4e, #3a2e24 40%, #241910);
+}
+
+.grass-bg {
+  background-image: radial-gradient(ellipse 18px 40px at 20px 100%, #8eae6a 60%, transparent 62%);
+  background-size: 46px 100%;
+  background-repeat: repeat-x;
+  background-position: bottom;
+  opacity: 0.9;
+}
+
+.cloud {
+  position: absolute;
+  background: #fff8ee;
+  border-radius: 40px;
+  opacity: 0.88;
+  animation: drift 28s linear infinite;
+}
+
+.cloud::before,
+.cloud::after {
+  content: '';
+  position: absolute;
+  background: #fff8ee;
+  border-radius: 50%;
+}
+
+.cloud::before {
+  width: 46%;
+  height: 90%;
+  left: 12%;
+  top: -50%;
+}
+
+.cloud::after {
+  width: 34%;
+  height: 70%;
+  right: 16%;
+  top: -30%;
+}
+
+.firefly {
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #f3e27a;
+  box-shadow: 0 0 10px #f3e27a;
+  animation: blink 2.8s ease-in-out infinite;
+}
+
+.leaf {
+  position: absolute;
+  width: 14px;
+  height: 8px;
+  background: #e8843a;
+  border-radius: 0 80% 0 80%;
+  animation: leaf-fall 9s linear infinite;
+}
+
+.building,
+.stall,
+.tomb,
+.mound {
+  position: absolute;
+  border: 0;
+  background: transparent;
+  color: #241833;
+  font-family: 'Fredoka', sans-serif;
+  cursor: pointer;
+}
+
+.building {
+  bottom: 18%;
+  min-height: 180px;
+}
+
+.building.market,
+.building.yard {
+  min-height: 70px;
+  bottom: 30%;
+  background: repeating-linear-gradient(90deg, #e8843a 0 42px, #7a3d62 42px 84px);
+  border: 3px solid #241833;
+  border-radius: 18px 18px 0 0;
+}
+
+.building svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  overflow: visible;
+}
+
+.building-label,
+.stall,
+.tomb {
+  display: block;
+  background: #fff8ee;
+  color: #241833;
+  border: 3px solid #241833;
+  border-radius: 999px;
+  padding: 0.2rem 0.55rem;
+  font-weight: 650;
+}
+
+.building-label {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+
+.stall,
+.tomb {
+  bottom: 22%;
+  min-height: 44px;
+  white-space: normal;
+}
+
+.tomb {
+  bottom: 16%;
+  width: 150px;
+  min-height: 110px;
+  border-radius: 70px 70px 16px 16px;
+  background: #e7e0d4;
+  padding-top: 1.4rem;
+}
+
+.mound {
+  bottom: 7%;
+  width: 74px;
+  height: 48px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at 50% 65%, #a97850, #4a3428 72%);
+  color: #fff8ee;
+  font-size: 0.78rem;
+  opacity: 0.72;
+}
+
+.dog-root.is-sniffing .mound {
+  opacity: 1;
+  box-shadow: 0 0 16px #e8b84a;
+}
+
+.trails {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.scent {
+  position: absolute;
+  bottom: 12%;
+  height: 10px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(232, 184, 74, 0.1), #f6e7a8 50%, rgba(232, 184, 74, 0.15));
+  box-shadow: 0 0 12px #e8b84a;
+}
+
+.dog-anchor {
+  position: absolute;
+  z-index: 3;
+  left: 22%;
+  bottom: 16%;
+  width: min(190px, 46vw);
+  pointer-events: none;
+}
+
+.dog-flip {
+  transform-origin: center;
+}
+
+.dog-anchor.face-left .dog-flip {
+  transform: scaleX(-1);
+}
+
+.dog .costume,
+.dog .eye-shut {
+  display: none;
+}
+
+.dog-flip[data-costume='pumpkin'] .costume-pumpkin,
+.dog-flip[data-costume='ghost'] .costume-ghost,
+.dog-flip[data-costume='witch'] .costume-hat {
+  display: inline;
+}
+
+.dog-anchor.is-walk .leg-front {
+  transform-origin: 126px 106px;
+  animation: step 0.28s ease-in-out infinite alternate;
+}
+
+.dog-anchor.is-walk .leg-back {
+  transform-origin: 70px 104px;
+  animation: step 0.28s ease-in-out infinite alternate-reverse;
+}
+
+.dog-anchor.is-walk .tail {
+  transform-origin: 46px 96px;
+  animation: wag 0.22s ease-in-out infinite alternate;
+}
+
+.dog-anchor.is-walk .body,
+.dog-anchor.is-walk .head {
+  animation: bob 0.28s ease-in-out infinite;
+}
+
+.dog-anchor.is-sit .leg-front,
+.dog-anchor.is-sit .leg-back,
+.dog-anchor.is-sleep .leg-front,
+.dog-anchor.is-sleep .leg-back {
+  transform: rotate(62deg);
+}
+
+.dog-anchor.is-sit .leg-front,
+.dog-anchor.is-sleep .leg-front {
+  transform-origin: 126px 106px;
+}
+
+.dog-anchor.is-sit .leg-back,
+.dog-anchor.is-sleep .leg-back {
+  transform-origin: 70px 104px;
+}
+
+.dog-anchor.is-sleep .eye-open {
+  display: none;
+}
+
+.dog-anchor.is-sleep .eye-shut {
+  display: inline;
+}
+
+.dog-anchor.is-sleep .dog-flip {
+  translate: 0 8px;
+}
+
+.zzz {
+  position: absolute;
+  right: 0;
+  top: -6px;
+  display: flex;
+  gap: 0.15rem;
+  opacity: 0;
+  font-family: 'Fredoka', sans-serif;
+  color: #fff8ee;
+  font-size: 1.3rem;
+}
+
+.dog-anchor.is-sleep .zzz {
+  opacity: 1;
+}
+
+.dog-anchor.is-sleep .zzz span {
+  animation: floatz 1.5s ease-in-out infinite;
+}
+
+.dog-anchor.is-sleep .zzz span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.dog-anchor.is-sleep .zzz span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+.dog-hud {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  pointer-events: none;
+}
+
+.hud-top,
+.hud-bottom {
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  align-items: center;
+}
+
+.hud-top {
+  top: 10px;
+}
+
+.hud-bottom {
+  bottom: 10px;
+}
+
+.dog-hud button,
+.dog-hud .minimap,
+.lanterns {
+  pointer-events: auto;
+}
+
+.hud-btn,
+.minimap button,
+.costumes button {
+  min-height: 44px;
+  border-radius: 999px;
+  border: 3px solid #241833;
+  background: #fff8ee;
+  color: #241833;
+  font-family: 'Fredoka', sans-serif;
+  font-weight: 650;
+  padding: 0.35rem 0.75rem;
+  cursor: pointer;
+}
+
+.hud-btn.primary {
+  background: #e8843a;
+}
+
+.minimap {
+  display: flex;
+  gap: 0.3rem;
+  flex-wrap: wrap;
+}
+
+.lanterns {
+  display: flex;
+  gap: 0.3rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.lanterns li {
+  background: #3a2a22;
+  color: #fff8ee;
+  border-radius: 999px;
+  padding: 0.35rem 0.6rem;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  border: 2px solid transparent;
+}
+
+.lanterns li.lit {
+  background: #e8b84a;
+  color: #241833;
+  border-color: #fff8ee;
+}
+
+.walk-hint,
+.key-hint {
+  margin: 0;
+  background: rgba(18, 12, 34, 0.72);
+  border-radius: 999px;
+  padding: 0.35rem 0.7rem;
+}
+
+.key-hint {
+  display: none;
+}
+
+.section-dialog,
+.dig-dialog {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  max-width: min(720px, calc(100vw - 24px));
+  width: 100%;
+}
+
+.section-dialog::backdrop,
+.dig-dialog::backdrop {
+  background: rgba(12, 8, 22, 0.62);
+}
+
+.dialog-card {
+  background: #fff8ee;
+  color: #241833;
+  border-radius: 24px;
+  padding: 1rem;
+  max-height: min(80vh, 760px);
+  overflow: auto;
+  border: 4px solid #241833;
+}
+
+.dialog-card h2,
+.dialog-card h3,
+.dialog-card h4,
+.dialog-card p,
+.dialog-card li {
+  color: #241833;
+}
+
+.dialog-close {
+  margin-bottom: 0.6rem;
+}
+
+.opening {
+  position: absolute;
+  inset: 0;
+  z-index: 8;
+  background: #070614;
+  overflow: hidden;
+}
+
+.opening[hidden] {
+  display: none !important;
+}
+
+.opening-moon {
+  position: absolute;
+  left: 58%;
+  top: 16%;
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background: #f6e7c8;
+  box-shadow: 0 0 40px rgba(246, 231, 200, 0.8);
+}
+
+.opening-cloud {
+  position: absolute;
+  height: 46px;
+  background: #fff8ee;
+  border-radius: 40px;
+  opacity: 0.9;
+}
+
+.opening-cloud::before,
+.opening-cloud::after {
+  content: '';
+  position: absolute;
+  background: #fff8ee;
+  border-radius: 50%;
+}
+
+.opening-cloud::before {
+  width: 52%;
+  height: 110%;
+  left: 8%;
+  top: -60%;
+}
+
+.opening-cloud::after {
+  width: 38%;
+  height: 90%;
+  right: 10%;
+  top: -40%;
+}
+
+.opening-porch {
+  position: absolute;
+  left: 50%;
+  bottom: 8%;
+  width: min(420px, 90vw);
+  transform: translateX(-50%);
+}
+
+.opening-caption {
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  bottom: 18px;
+  margin: 0;
+  text-align: center;
+  font-family: 'Fredoka', sans-serif;
+}
+
+.skip-open {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 2;
+}
+
+.gust {
+  position: absolute;
+  inset: 0;
+  z-index: 7;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.gust[hidden] {
+  display: none !important;
+}
+
+.gust .gust-leaf {
+  position: absolute;
+  top: 20%;
+  width: 18px;
+  height: 10px;
+  background: #e8843a;
+  border-radius: 0 80% 0 80%;
+}
+
+.paw-print {
+  position: fixed;
+  width: 22px;
+  height: 22px;
+  margin: -8px 0 0 -8px;
+  pointer-events: none;
+  z-index: 45;
+  background: center / contain no-repeat url('/paw-cursor.svg');
+  animation: fade-paw 0.9s ease forwards;
+}
+
+.tree {
+  position: absolute;
+  bottom: 24%;
+  width: 78px;
+  pointer-events: none;
+}
+
+@media (max-width: 720px) {
+  .hud-top,
+  .hud-bottom {
+    gap: 0.3rem;
+  }
+
+  .hud-btn,
+  .minimap button,
+  .costumes button,
+  .lanterns li {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.85rem;
+  }
+
+  .key-hint,
+  .walk-hint {
+    display: none;
+  }
+
+  .dog-anchor {
+    left: 4px;
+    width: 108px;
+    bottom: 20%;
+  }
+
+  .building.cottage {
+    left: 168px !important;
+    transform: scale(0.7);
+    transform-origin: left bottom;
+  }
+}
+
+@media (min-width: 900px) {
+  .key-hint {
+    display: inline;
+  }
+
+  .dog-anchor {
+    left: 22%;
+    width: 210px;
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  body.paw-cursor.is-dog,
+  body.paw-cursor.is-dog * {
+    cursor: url('/paw-cursor.svg') 8 8, auto;
+  }
+}
+
+@keyframes step {
+  from { transform: rotate(22deg); }
+  to { transform: rotate(-18deg); }
+}
+
+@keyframes wag {
+  from { transform: rotate(-12deg); }
+  to { transform: rotate(18deg); }
+}
+
+@keyframes bob {
+  from { transform: translateY(0); }
+  to { transform: translateY(-3px); }
+}
+
+@keyframes floatz {
+  from { transform: translateY(6px); opacity: 0.2; }
+  to { transform: translateY(-14px); opacity: 1; }
+}
+
+@keyframes drift {
+  from { transform: translateX(0); }
+  to { transform: translateX(80px); }
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 0.25; }
+  50% { opacity: 1; }
+}
+
+@keyframes leaf-fall {
+  from { transform: translateY(-10px) rotate(0deg); }
+  to { transform: translateY(40px) rotate(20deg); }
+}
+
+@keyframes fade-paw {
+  to { opacity: 0; transform: translateY(6px) scale(0.8); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cloud,
+  .firefly,
+  .leaf,
+  .dog-anchor.is-walk .leg-front,
+  .dog-anchor.is-walk .leg-back,
+  .dog-anchor.is-walk .tail,
+  .dog-anchor.is-walk .body,
+  .dog-anchor.is-walk .head,
+  .dog-anchor.is-sleep .zzz span,
+  .paw-print {
+    animation: none !important;
+  }
+}

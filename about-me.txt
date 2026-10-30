@@ -1,0 +1,124 @@
+PERSONAL CONTEXT
+Naomi Andrea Pereira
+
+Do not invent contact details, dates, employers, or project claims that are not listed here. If a field is missing, ask instead of guessing.
+
+================================================================================
+PROFILE
+================================================================================
+
+Name: Naomi Andrea Pereira
+Roles: Full Stack Developer and AI/ML Engineer
+Location: Bengaluru, India
+Focus: AI/ML
+GitHub: https://github.com/Naomiiap
+Also appears as: https://github.com/naomiiAP
+
+Short bio:
+I am a Full Stack Developer and AI/ML Engineer. Building intelligent systems with Agentic Systems, RAG, multimodal AI, and scalable full-stack solutions. I love clean code, bold designs, and pushing the boundaries of what's possible on the web.
+
+Not listed, so do not fabricate: email, phone, LinkedIn, Twitter, personal address, or photo.
+
+================================================================================
+EDUCATION
+================================================================================
+
+School: Ramaiah Institute of Technology
+Degree: B.E. Information Science and Engineering
+Location: Bengaluru
+Dates: October 2023 – August 2027
+Score: CGPA 9.67 / 10.00
+
+================================================================================
+PROFESSIONAL EXPERIENCE
+================================================================================
+
+1. Project Intern — Hewlett Packard Enterprise
+   March 2026 – Present
+   Built an internal tool to automate software recipe detection for Hewlett Packard Enterprise's Private Cloud platform, mapping deployed Helm chart versions to component recipes by integrating Kubernetes cluster data, Git history, and a dynamic web UI.
+
+2. Research Intern — Samsung R&D Institute
+   November 2025 – March 2026
+   Implemented a real-time, GPU-accelerated pipeline to simulate anamorphic lens effects from standard spherical sensor data.
+   Integrated custom geometric transformation shaders into the imaging stack to enable high-fidelity projection remapping at real-time frame rates.
+
+3. Frontend Development Intern — Fintervue (Remote)
+   December 2024 – February 2025
+   Designed and developed the frontend of the Fintervue website.
+   Worked on an AI-powered interviewer and resume analyser.
+
+================================================================================
+TECHNICAL SKILLS
+================================================================================
+
+Web development:
+HTML, CSS, JavaScript, TypeScript, React.js, Node.js, Next.js, FastAPI, Flask
+
+Libraries and tools:
+NumPy, Pandas, Matplotlib
+
+Languages:
+Python, C, C++, Dart, Solidity
+
+Web design:
+Figma, Canva
+
+Databases:
+MySQL, MongoDB
+
+Other:
+Git, REST APIs, Problem Solving, Blockchain
+
+Also used in project work:
+BERT, Vision Transformer (ViT), Scikit-Learn, TF-IDF, perceptual hashing, Sepolia, Remix, Ether.js, IPFS, SQLite, MobileNetV2, NLP, Kubernetes, Helm, GPU shaders
+
+Focus areas:
+Agentic systems, RAG, multimodal AI, full-stack products, blockchain credentials and authentication
+
+================================================================================
+PROJECTS
+================================================================================
+
+1. ACCPS — AI Content Copyright System
+   Stack: Next.js, FastAPI, Sepolia, Remix, Scikit-Learn
+   What it is: Blockchain-based product authentication and counterfeit detection using lightweight TF-IDF and perceptual hashing.
+   Source: https://github.com/Byte-Sized-Brain/accps
+   Demo: https://accps.vercel.app/
+
+2. Emotisense — AI-Powered Emotion Analysis
+   Stack: React, Node.js, Python, BERT, ViT
+   What it is: An AI-based emotion detection system using BERT for text and a Vision Transformer for images. Fine-tuned models on benchmark datasets.
+   Source: not provided
+   Demo: not provided
+
+3. Wanderly — Smart Travel Companion
+   Stack: Next.js, Flask, SQLite, Solidity
+   What it is: AI-driven travel platform with adaptive itinerary generation and blockchain-based memories. Voice-first trip planning included.
+   Source: not provided
+   Demo: not provided
+
+4. EduVault — Decentralized Academic Records
+   Stack: React, Solidity, Ether.js, IPFS
+   What it is: A secure, blockchain-based platform for storing and verifying academic records, changing credential verification and preventing fraud.
+   Source: https://github.com/naomiiAP/eduvault
+   Demo: https://eduvault-woad.vercel.app/
+
+5. AgriAssist — Smart Farming Assistant
+   Stack: MobileNetV2, NLP, Yield Prediction
+   What it is: Multilingual farming assistant with crop disease detection, yield prediction, and a voice-enabled chatbot for accessibility.
+   Source: not provided
+   Demo: not provided
+
+================================================================================
+ACHIEVEMENTS
+================================================================================
+
+- Google X Deepstation Hackathon — 1st Place — MSRIT Bangalore — May 2026
+- Athernex Hackathon — 2nd Place — BMSCE Bangalore — April 2026
+- Hack-A-War Hackathon — 1st Place — MSRIT Bangalore — April 2026
+- Mindscape Hackathon — 2nd Place — BNMIT Bangalore — July 2025
+- Code-A-Thon Hackathon — 3rd Place — MIT Bangalore — April 2025
+- Code Red '25 — Consolation Prize — BMSIT — January 2025
+- Smart India Hackathon (SIH) 2024 — Runner-up — LPU Punjab — December 2024
+
+Academic: CGPA 9.63 / 10.00 at Ramaiah Institute of Technology.
