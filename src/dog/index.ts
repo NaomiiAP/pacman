@@ -237,8 +237,8 @@ function onKey(event: KeyboardEvent): void {
     return;
   }
   if (event.type !== 'keydown' || opening.hidden === false) return;
-  const step = event.key === 'a' || event.key === 'A' || event.key === 'ArrowLeft' ? -140 : 0;
-  const forward = event.key === 'd' || event.key === 'D' || event.key === 'ArrowRight' ? 140 : 0;
+  const step = event.key === 'a' || event.key === 'A' || event.key === 'ArrowLeft' || event.key === 'ArrowUp' ? -140 : 0;
+  const forward = event.key === 'd' || event.key === 'D' || event.key === 'ArrowRight' || event.key === 'ArrowDown' ? 140 : 0;
   if (step || forward) {
     event.preventDefault();
     scroller.scrollTop += step + forward;
@@ -371,7 +371,7 @@ function mount(): void {
   hint.textContent = 'Scroll to walk';
   const keys = document.createElement('p');
   keys.className = 'key-hint';
-  keys.textContent = 'A and D walk · S sniff · E opens';
+  keys.textContent = 'Arrows or A and D walk · S sniff · E opens';
   const map = document.createElement('div');
   map.className = 'minimap';
   map.setAttribute('role', 'navigation');

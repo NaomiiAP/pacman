@@ -251,7 +251,7 @@ export function renderPortfolio(): string {
       </section>
       <section id="graveyard" class="sheet">
         <h2 id="graveyard-title">Project graveyard</h2>
-        <p>Abandoned projects. Each stone keeps the name, the years, what happened, and what I learned.</p>
+        <p>Each stone keeps a name, the years, what happened, and what was learned.</p>
         <div class="grave-grid">${gravesHtml}</div>
       </section>
       <section id="contact" class="sheet">

@@ -17,9 +17,9 @@ Checked and left as-is:
 
 ## Rules
 
-2. Keyboard focus uses a gold outline. Gold `#e8b84a` on cream `#fff8ee` is about 1.75:1, so focus on the light cards (Close, Source, Demo, spirit buttons) is hard to see.
-3. A, D, Left, and Right walk the pup. Up and Down do not, even though the challenge asks for the arrow keys.
-4. The graveyard intro says "what I learned". That first person is not a sentence from `about-me.txt`.
+2. Keyboard focus uses a gold outline. Gold `#e8b84a` on cream `#fff8ee` is about 1.75:1, so focus on the light cards (Close, Source, Demo, spirit buttons) is hard to see. Fixed with a dark outline and a gold halo.
+3. A, D, Left, and Right walk the pup. Up and Down do not, even though the challenge asks for the arrow keys. Fixed: Up and Down walk as well.
+4. The graveyard intro says "what I learned". That first person is not a sentence from `about-me.txt`. Fixed: the line no longer uses "I".
 
 ## Mobile
 
