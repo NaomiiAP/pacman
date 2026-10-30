@@ -58,5 +58,9 @@ These are problems from the build, not a list of missing features.
 - The sticky nav covered the headings it linked to. The sections now leave room for the nav when you jump to them.
 - about-me.txt lists CGPA as 9.67 in Education and 9.63 under Achievements. The page shows 9.67 so it does not print two scores. [Your words: which number is right, if you want to say so.]
 - Vite 8’s config loader warned about imports without file extensions. Those imports now include `.ts`.
+- Amplify’s build image sets `NODE_ENV=production`. A plain `npm ci` then skips devDependencies, so Vite and the Amplify CLI would be missing. The build spec installs with `--include=dev`.
+- On a phone the corner puppy sat on top of the skills and project text. The narrow layout now keeps a gutter for that hint.
+- The sit pose swung the legs out sideways. Sitting now lowers the body and only folds the legs a little.
+- A gold focus ring disappears on the cream cards. Focus is now a dark outline with a gold halo.
 
 [Your words: the challenge you want to tell in your own voice. A good one is the moment the dog and the text had to be the same page, or the first time the village worked on a phone.]
