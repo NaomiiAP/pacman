@@ -61,7 +61,7 @@ The repo includes [amplify.yml](amplify.yml) and an Amplify Gen 2 backend in `am
 
 1. Commit the project and push it to GitHub. This folder is a git repo only after `git init`; nothing has been pushed.
 2. In the Amplify console, create a new app and connect that repository. Amplify should detect the Gen 2 backend because `amplify/` and `amplify.yml` are present.
-3. The build spec deploys the backend with `npx ampx pipeline-deploy`, then runs `npm run build`. The site is a static Vite build. Artifacts are in `dist`.
+3. The build spec installs dependencies with `npm ci --include=dev` (Amplify sets `NODE_ENV=production`, which would otherwise skip Vite and the Amplify CLI), deploys the backend with `npx ampx pipeline-deploy`, then runs `npm run build`. The site is a static Vite build. Artifacts are in `dist`.
 4. After the first backend deploy, the guestbook appears. Until `amplify_outputs.json` exists at build time, the guestbook is not shown and the rest of the site works.
 
 The guestbook stores a paw and a note of at most 140 characters in DynamoDB through Amplify Data (AppSync). Visitors use the Cognito identity pool’s unauthenticated role. There is no login form. They can create and read paws, not edit or delete them. The browser also waits 30 seconds between paws.

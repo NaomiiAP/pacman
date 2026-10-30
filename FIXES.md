@@ -13,7 +13,7 @@ Checked and left as-is:
 
 ## Blocker
 
-1. `amplify.yml` runs `npm ci` with no `--include=dev`. Amplify Hosting sets `NODE_ENV=production`, which makes `npm ci` skip devDependencies. Vite, TypeScript, and the Amplify CLI are devDependencies, so a clean Amplify build can fail before `npm run build` or `npx ampx pipeline-deploy`.
+1. `amplify.yml` runs `npm ci --include=dev`. Fixed. Amplify Hosting sets `NODE_ENV=production`, which otherwise skips devDependencies, and Vite, TypeScript, and the Amplify CLI would be missing.
 
 ## Rules
 
