@@ -5,7 +5,7 @@ amplify_outputs.json
 amplifyconfiguration*
 .DS_Store
 *.local
-screenshots
+/screenshots
 playwright-report
 test-results
 unused-assets
