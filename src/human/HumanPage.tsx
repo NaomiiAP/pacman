@@ -761,13 +761,32 @@ export function HumanPage(): ReactNode {
                 </li>
               ) : null}
             </ul>
-            <div id="guestbook" hidden></div>
             <div className="contact-ground" aria-hidden="true">
               <Art html={tombstone()} className="ground-grave grave-a" />
               <Art html={tombstone({ text: 'BOO' })} className="ground-grave grave-b" />
               <Art html={pumpkin({ lit: true })} className="ground-pumpkin" />
               <Art html={ghost({ mouth: 'smile' })} className="ground-ghost" />
             </div>
+          </div>
+        </section>
+
+        {/* Shown only when the Amplify backend exists (src/guestbook.ts). */}
+        <section id="guestbook" className="section guestbook" aria-labelledby="guestbook-title" hidden>
+          <SectionHead
+            id="guestbook-title"
+            sticker={candyBucket()}
+            kicker="Before you go"
+            title="Guestbook"
+            sub="Leave a paw and a short note. The pup pins it to the board for the next visitor."
+            decor={[lollipop(), wrappedCandy({ color: '#ffa6c9' })]}
+          />
+          <div className="paw-board">
+            <Art html={garland(1)} className="board-lights" />
+            <Art html={spiderDangle()} className="board-spider" />
+            <Art html={pupArt()} className="board-pup is-sit" />
+            <Art html={pumpkin({ mouth: 'smile' })} className="board-pumpkin" />
+            <Art html={candyCorn()} className="board-candy" />
+            <div id="guestbook-app"></div>
           </div>
         </section>
 

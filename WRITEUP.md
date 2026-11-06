@@ -84,7 +84,8 @@ My focus is agentic systems and RAG, and I've collected eight hackathon awards, 
 - **Skills:** focus areas plus seven groups of tools and languages.
 - **Projects:** six projects with filters (AI & ML, Cloud & AWS, Blockchain, Web apps), live demos and source links. RepoWatch, an always-on issue-triage agent on AWS Lambda and Amazon Bedrock, comes first.
 - **Achievements:** eight hackathon results, three of them first place.
-- **Contact:** GitHub and LinkedIn, plus a paw-print guestbook.
+- **Contact:** GitHub and LinkedIn.
+- **Guestbook:** a cork board at the end of the page. Visitors pin a short note with a paw, and it stays up for the next visitor.
 
 All personal text lives in one file, `src/content/portfolio.ts`. React renders it to static HTML at build time and is never sent to the browser. A few kilobytes of TypeScript add the interactions on top: a "lights out" theme, pumpkins and a ghost to poke in the hero, project filters, and the two pup features. Every illustration is an original SVG drawing.
 

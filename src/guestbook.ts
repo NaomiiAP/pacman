@@ -20,36 +20,34 @@ function waitRemaining(): number {
   return Math.max(0, GAP_MS - (Date.now() - last));
 }
 
+/**
+ * Mounts the guestbook into `host` (the board inside the #guestbook section).
+ * The whole section stays hidden, and is removed, when there is no backend
+ * or the wall cannot be read, so the page never shows a broken form.
+ */
 export async function mountGuestbook(host: HTMLElement | null, outputs: Record<string, unknown>): Promise<void> {
+  const shell = host?.closest<HTMLElement>('section') ?? host;
   if (!host || !outputs.data) {
-    host?.remove();
+    shell?.remove();
     return;
   }
 
   Amplify.configure(outputs as ResourcesConfig);
   const listed = await client.models.PawPrint.list({ authMode: 'identityPool', limit: 40 });
   if (listed.errors?.length) {
-    host.remove();
+    shell?.remove();
     return;
   }
 
-  host.hidden = false;
+  if (shell) shell.hidden = false;
   host.replaceChildren();
 
-  const head = document.createElement('div');
-  head.className = 'gb-head';
-  const heading = document.createElement('h3');
-  const headPaw = document.createElement('span');
-  headPaw.className = 'paw-mark';
-  headPaw.setAttribute('aria-hidden', 'true');
-  heading.append(headPaw, 'Paw-print wall');
-  const sub = document.createElement('p');
-  sub.className = 'gb-sub';
-  sub.textContent = 'Leave a paw and a short note for the pup.';
-  head.append(heading, sub);
-
-  const form = document.createElement('form');
-  form.className = 'gb-form';
+  // The note card the visitor writes on.
+  const compose = document.createElement('form');
+  compose.className = 'paw-compose';
+  const title = document.createElement('p');
+  title.className = 'compose-title';
+  title.textContent = 'Write on the board';
   const label = document.createElement('label');
   label.htmlFor = 'paw-message';
   label.className = 'visually-hidden';
@@ -65,9 +63,9 @@ export async function mountGuestbook(host: HTMLElement | null, outputs: Record<s
   const submit = document.createElement('button');
   submit.type = 'submit';
   submit.className = 'btn btn-primary btn-small';
-  submit.textContent = 'Leave a paw';
+  submit.textContent = 'Pin my paw';
   const row = document.createElement('div');
-  row.className = 'gb-row';
+  row.className = 'compose-row';
   row.append(field, submit);
   const status = document.createElement('p');
   status.setAttribute('role', 'status');
@@ -75,39 +73,44 @@ export async function mountGuestbook(host: HTMLElement | null, outputs: Record<s
   count.className = 'paw-count';
   count.textContent = '0 / 140';
   const meta = document.createElement('div');
-  meta.className = 'gb-meta';
+  meta.className = 'compose-meta';
   meta.append(status, count);
+  compose.append(title, label, row, meta);
+
+  // The pinned notes.
   const wall = document.createElement('ul');
   wall.className = 'paw-wall';
+  wall.setAttribute('aria-label', 'Notes from visitors');
   const more = document.createElement('button');
   more.type = 'button';
-  more.className = 'gb-more';
+  more.className = 'btn btn-plain btn-small paw-more';
   more.hidden = true;
   let showAll = false;
-  const SHOWN = 9;
+  const SHOWN = 8;
 
   const renderWall = (items: typeof listed.data) => {
     const sorted = [...items].sort((a, b) => (b.createdAt ?? '').localeCompare(a.createdAt ?? ''));
     wall.replaceChildren();
     if (!sorted.length) {
       const empty = document.createElement('li');
-      empty.className = 'gb-empty';
-      empty.textContent = 'No paws yet. Be the first.';
+      empty.className = 'paw-empty';
+      empty.textContent = 'No paws yet. Be the first!';
       wall.append(empty);
       more.hidden = true;
       return;
     }
     more.hidden = sorted.length <= SHOWN;
-    more.textContent = showAll ? 'Show fewer paws' : `Show all ${sorted.length} paws`;
+    more.textContent = showAll ? 'Show fewer notes' : `See all ${sorted.length} notes`;
     for (const item of showAll ? sorted : sorted.slice(0, SHOWN)) {
       const li = document.createElement('li');
+      li.className = 'paw-note';
+      const text = document.createElement('p');
+      text.textContent = item.message ?? '';
       const paw = document.createElement('span');
       paw.className = 'paw-mark';
       paw.textContent = 'paw';
       paw.dataset.costume = item.costume ?? 'plain';
-      const text = document.createElement('p');
-      text.textContent = item.message ?? '';
-      li.append(paw, text);
+      li.append(text, paw);
       wall.append(li);
     }
   };
@@ -116,7 +119,12 @@ export async function mountGuestbook(host: HTMLElement | null, outputs: Record<s
     count.textContent = `${field.value.length} / 140`;
   });
 
-  form.addEventListener('submit', (event) => {
+  more.addEventListener('click', () => {
+    showAll = !showAll;
+    renderWall(listed.data);
+  });
+
+  compose.addEventListener('submit', (event) => {
     event.preventDefault();
     const message = field.value.trim();
     status.textContent = '';
@@ -136,30 +144,24 @@ export async function mountGuestbook(host: HTMLElement | null, outputs: Record<s
     )
       .then((result) => {
         if (result.errors?.length || !result.data) {
-          status.textContent = 'The wall could not save that paw.';
+          status.textContent = 'The board could not save that paw.';
           return;
         }
         localStorage.setItem(STORAGE_KEY, String(Date.now()));
         field.value = '';
         count.textContent = '0 / 140';
-        status.textContent = 'The paw is on the wall.';
+        status.textContent = 'Pinned! Your paw is on the board.';
         listed.data.unshift(result.data);
         renderWall(listed.data);
       })
       .catch(() => {
-        status.textContent = 'The wall could not save that paw.';
+        status.textContent = 'The board could not save that paw.';
       })
       .finally(() => {
         submit.disabled = false;
       });
   });
 
-  more.addEventListener('click', () => {
-    showAll = !showAll;
-    renderWall(listed.data);
-  });
-
-  form.append(label, row, meta);
-  host.append(head, form, wall, more);
+  host.append(compose, wall, more);
   renderWall(listed.data);
 }

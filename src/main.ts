@@ -58,15 +58,17 @@ document.addEventListener('click', (event) => {
     });
 });
 
-const guestbookHost = document.querySelector<HTMLElement>('#guestbook');
+// The guestbook section only appears once the Amplify backend exists.
+const guestbookSection = document.getElementById('guestbook');
+const guestbookHost = document.getElementById('guestbook-app');
 if (!outputs) {
-  guestbookHost?.remove();
+  guestbookSection?.remove();
 } else {
   const config = outputs;
   void import('./guestbook.ts')
     .then((guestbook) => guestbook.mountGuestbook(guestbookHost, config))
     .catch((error: unknown) => {
       console.error(error);
-      guestbookHost?.remove();
+      guestbookSection?.remove();
     });
 }

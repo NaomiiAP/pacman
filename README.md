@@ -82,7 +82,7 @@ Local sandbox, once AWS credentials are configured:
 npx ampx sandbox
 ```
 
-That writes `amplify_outputs.json`, which is gitignored. Restart `npm run dev` and the paw wall shows up in Contact.
+That writes `amplify_outputs.json`, which is gitignored. Restart `npm run dev` and the Guestbook section shows up after Contact.
 
 API keys are not used for the guestbook. Amplify’s current public-data guide recommends guest access through the identity pool because API keys expire.
 
