@@ -1,17 +1,186 @@
-# Naomi Andrea Pereira — Spirit Pup Portfolio
+<p align="center">
+  <img src="docs/screenshots/hero.jpg" alt="The portfolio's landing page: Naomi Andrea Pereira, with the Ask the pup and Become the dog buttons beside a haunted village at night" width="900">
+</p>
 
-A spooky-cute (kawaii Halloween) portfolio with two modes. Human mode is a single page: About me, Education, Experience, Skills, Projects, Achievements, and Contact, plus a project graveyard once its stones are filled in. The spirit pup is the creative feature, in two forms. **Ask the pup** is a tiny agent that answers questions from the portfolio (BM25 retrieval written from scratch, running in the browser) and can act on the page. **Become the dog** lets the visitor walk the pup through a pastel village that follows their local time of day; each building opens the same HTML as the page.
+<h1 align="center">Spirit Pup Portfolio</h1>
 
-The pup, the skill spirits, the village and every other picture are original SVG drawings in `src/art/`. The pup is not a pet named in the bio, and none of the characters come from a film.
+<p align="center">
+  <b>Naomi Andrea Pereira</b> · Full Stack Developer and AI/ML Engineer · Bengaluru
+</p>
 
-## How it is built
+<p align="center">
+  A Halloween portfolio with a spirit pup that answers questions about me,<br>
+  fetches a résumé for your job post, and lets you walk my village.
+</p>
 
-- `src/content/portfolio.ts` holds all personal text. `src/content/derive.ts` works out the numbers and project categories from it, so the page never states something the content does not.
-- `src/human/HumanPage.tsx` is rendered to static HTML at build time by React. React is not sent to the browser.
-- `src/main.ts` and the files next to it in `src/human/` add the interactions on top of that HTML: the menu, the "lights out" theme, the hero critters, project filters, and small effects. All of them switch off when the browser asks for less motion.
-- `src/agent/` is the pup's chat: `knowledge.ts` turns the content into passages, `search.ts` ranks them with BM25, `brain.ts` picks a tool or an answer, and `chat.ts` is the panel. It loads only when someone opens the chat.
-- `src/dog/` is dog mode. It loads only after **Become the dog**.
-- `src/art/` draws every illustration as an SVG string, shared by both modes.
+<p align="center">
+  <a href="https://master.d3kz5bg2dsjqj0.amplifyapp.com"><b>Visit the live site</b></a>
+</p>
+
+<p align="center">
+  <img alt="AWS Amplify" src="https://img.shields.io/badge/AWS_Amplify-Hosting_%2B_Gen_2-FF9900">
+  <img alt="AWS AppSync" src="https://img.shields.io/badge/AWS_AppSync-GraphQL-FF4F8B">
+  <img alt="Amazon DynamoDB" src="https://img.shields.io/badge/Amazon_DynamoDB-on--demand-4053D6">
+  <img alt="Amazon Cognito" src="https://img.shields.io/badge/Amazon_Cognito-guest_access-DD344C">
+  <img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white">
+  <img alt="Vite" src="https://img.shields.io/badge/Vite-646CFF?logo=vite&logoColor=white">
+</p>
+
+---
+
+Built for the **AWS Student Builder Challenge**. Underneath, it's a normal, readable portfolio: About me, Education, Experience, Skills, Projects, Achievements, a project graveyard, Contact and a guestbook, all as real HTML that works without JavaScript. On top of it, a spirit pup knows three tricks. None of them get in the way of the page.
+
+## The pup's three tricks
+
+<table>
+  <tr>
+    <td width="33%" valign="top">
+      <img src="docs/screenshots/ask-the-pup.jpg" alt="The chat panel answering which hackathons Naomi has won, with a Found in: Achievements source chip">
+      <h3>Ask the pup</h3>
+      <p>A small retrieval agent that runs in your browser. It ranks passages from the portfolio with BM25 (written from scratch), cites where each answer came from, admits when it doesn't know, and can act on the page: filter projects, switch to dark mode, or start dog mode.</p>
+    </td>
+    <td width="33%" valign="top">
+      <img src="docs/screenshots/fetch.jpg" alt="A one-page résumé fetched for cloud and AWS roles, with matching skills, projects and experience">
+      <h3>Fetch!</h3>
+      <p>Pick a role or paste a job post and throw the ball. The pup runs back with a one-page résumé built only from what's already in the portfolio: matching skills, the three best projects, relevant internships and hackathon wins. Ready to print as a PDF.</p>
+    </td>
+    <td width="33%" valign="top">
+      <img src="docs/screenshots/dog-village.jpg" alt="Dog mode: the pup walking past the cottage, school, quest board and spell workshop">
+      <h3>Become the dog</h3>
+      <p>The page turns into a side-scrolling village where every building is a section of the portfolio. Sniff out scent trails, dig up buried notes, try on costumes, and light three lanterns to reach the ending. <b>Back to human</b> is always one click away.</p>
+    </td>
+  </tr>
+</table>
+
+## Dog mode
+
+<table>
+  <tr>
+    <td width="50%"><img src="docs/screenshots/dog-open-building.jpg" alt="The night market open in dog mode, showing the Projects section in a dialog"></td>
+    <td width="50%"><img src="docs/screenshots/dog-sniff-dig.jpg" alt="The pup standing on a dig spot next to the graveyard, with a Dig here button"></td>
+  </tr>
+  <tr>
+    <td align="center"><sub>Each building opens the real section of the page.</sub></td>
+    <td align="center"><sub>Sniff (S) for scent trails, then dig where the bone is.</sub></td>
+  </tr>
+  <tr>
+    <td width="50%"><img src="docs/screenshots/dog-buried-notes.jpg" alt="A dig result listing every hackathon result as buried notes"></td>
+    <td width="50%"><img src="docs/screenshots/dog-lanterns.jpg" alt="The ending dialog titled The lanterns are lit"></td>
+  </tr>
+  <tr>
+    <td align="center"><sub>One dig spot holds every hackathon win.</sub></td>
+    <td align="center"><sub>Light the cottage, workshop and market lanterns for the ending.</sub></td>
+  </tr>
+</table>
+
+| Building | Opens |
+| --- | --- |
+| Cottage | About me |
+| School | Education |
+| Quest board | Experience |
+| Spell workshop | Skills |
+| Night market (one stall per project) | Projects |
+| Trophy hall | Achievements |
+| Mailbox | Contact |
+| Graveyard (one tombstone per project) | Project graveyard |
+
+The sky follows your local time: golden hour by day, dusk in the evening, and a full moon at night.
+
+## The portfolio
+
+<table>
+  <tr>
+    <td width="33%"><img src="docs/screenshots/about.jpg" alt="About me section"></td>
+    <td width="33%"><img src="docs/screenshots/skills.jpg" alt="Skills section"></td>
+    <td width="33%"><img src="docs/screenshots/projects.jpg" alt="Projects section with filters"></td>
+  </tr>
+  <tr>
+    <td align="center"><sub>About me</sub></td>
+    <td align="center"><sub>Skills</sub></td>
+    <td align="center"><sub>Projects, with filters</sub></td>
+  </tr>
+  <tr>
+    <td width="33%"><img src="docs/screenshots/achievements.jpg" alt="Achievements section"></td>
+    <td width="33%"><img src="docs/screenshots/graveyard.jpg" alt="Project graveyard with two tombstones"></td>
+    <td width="33%"><img src="docs/screenshots/guestbook.jpg" alt="Guestbook cork board with pinned notes"></td>
+  </tr>
+  <tr>
+    <td align="center"><sub>Achievements</sub></td>
+    <td align="center"><sub>Project graveyard: projects I set down, and what they taught me</sub></td>
+    <td align="center"><sub>Guestbook: pin a note for the next visitor</sub></td>
+  </tr>
+</table>
+
+<p align="center">
+  <img src="docs/screenshots/dark-mode.jpg" alt="The landing page in dark mode" width="760"><br>
+  <sub>"Lights out" dark mode: tap the moon.</sub>
+</p>
+
+<p align="center">
+  <img src="docs/screenshots/phone-hero.jpg" alt="The landing page on a phone" width="230">&nbsp;&nbsp;
+  <img src="docs/screenshots/phone-menu.jpg" alt="The menu on a phone" width="230">&nbsp;&nbsp;
+  <img src="docs/screenshots/phone-projects.jpg" alt="Projects on a phone" width="230"><br>
+  <sub>On a phone: the landing page, the menu, and the projects.</sub>
+</p>
+
+## How it runs on AWS
+
+<p align="center">
+  <img src="docs/architecture.png" alt="Architecture: code deployed from a laptop with the AWS CLI to Amplify Hosting; the browser runs the pup agent and dog mode; the guestbook uses Cognito, AppSync and DynamoDB" width="820">
+</p>
+
+Everything clever runs in the visitor's browser, so a judge asking the pup fifty questions costs nothing. AWS serves the site and runs the one feature that needs a backend: the guestbook, where **anonymous visitors write to a real database without logging in and without any AWS key in the page.**
+
+| Service | Its job here |
+| --- | --- |
+| **AWS Amplify Hosting** | Serves the static site over HTTPS from a global CDN. Releases are uploaded from the terminal. |
+| **Amplify Gen 2** | The backend is written in TypeScript in [`amplify/`](amplify/): one `PawPrint` model with validation and permissions. |
+| **AWS CloudFormation** | `npx ampx pipeline-deploy` turns that TypeScript into a root stack with nested stacks for auth, data and the model. |
+| **Amazon Cognito** | An identity pool with guest access gives each visitor temporary AWS credentials. No sign-up, no long-lived keys. |
+| **AWS IAM** | The guest role may only call `appsync:GraphQL` on this one API's `PawPrint` fields. |
+| **AWS AppSync** | The GraphQL API. Its resolvers check the 140-character limit and let guests create and read notes, never edit or delete them. |
+| **Amazon DynamoDB** | Stores each note and the costume the pup was wearing, with on-demand capacity. |
+
+The whole data model:
+
+```ts
+const schema = a.schema({
+  PawPrint: a
+    .model({
+      message: a.string().required()
+        .validate((v) => v.minLength(1, 'Write a short note').maxLength(140, 'Keep it to 140 characters')),
+      costume: a.enum(['plain', 'pumpkin', 'ghost', 'witch']),
+    })
+    .authorization((allow) => [allow.guest().to(['create', 'read'])]),
+});
+```
+
+To check the guest permissions against the deployed backend, run [`scripts/guest-check.sh`](scripts/guest-check.sh). It gets real guest credentials the way a visitor's browser does, then tries to read, update and delete notes. Reading works; updating and deleting come back `Not Authorized`. The update and delete target a note that doesn't exist, so it never changes the board.
+
+```bash
+bash scripts/guest-check.sh
+```
+
+## Built with
+
+- **Vite + TypeScript.** The page is rendered to static HTML at build time with React, and React is not shipped to the browser. Small TypeScript modules add the interactions, and the chat, Fetch and dog mode only load when someone uses them.
+- **Original SVG art.** Every illustration is drawn in code in [`src/art/`](src/art/) and shared by both modes.
+- **GSAP** for the animations in dog mode, and the **Web Audio API** for sound.
+- **AWS Amplify Gen 2** for the guestbook backend, and **Playwright** for screenshots and interaction checks.
+
+```text
+src/
+  content/   portfolio.ts holds every word on the site; derive.ts works out counts and tags
+  human/     the page (rendered at build time) and its interactions, including Fetch!
+  agent/     the pup's chat: passages, BM25 search, routing and tools, the panel
+  dog/       dog mode: the village, walking, sniffing, digging, lanterns
+  art/       every illustration, as SVG
+  styles/    CSS for the page, the chat and dog mode
+  guestbook.ts
+amplify/     Amplify Gen 2 backend: auth (Cognito) and data (AppSync + DynamoDB)
+scripts/     screenshot.mjs (interaction check), guest-check.sh (guest permissions)
+docs/        architecture diagram and README screenshots
+```
 
 ## Run it locally
 
@@ -19,95 +188,85 @@ You need Node.js 18.16 or newer.
 
 ```bash
 npm install
-npm run dev
-```
-
-Open the URL Vite prints, usually http://localhost:5173.
-
-```bash
-npm run build
+npm run dev          # http://localhost:5173
+npm run build        # static site in dist/
 npm run preview
+npm run screenshots  # after a build: checks the main interactions and saves screenshots
 ```
 
-`npm run build` prints a warning for every `[PLACEHOLDER]` still in the content file and for every contact field that is still empty. The site still builds. Empty fields are left out of the page.
+The guestbook appears locally once `amplify_outputs.json` exists, either from a deploy or from `npx ampx sandbox` with AWS credentials configured. Without it, the guestbook section is left out and the rest of the site works.
 
-Screenshots of both modes, plus a check that the main interactions still work:
+<details>
+<summary><b>Editing the content</b></summary>
 
-```bash
-npm run build
-npm run screenshots
-```
+<br>
 
-Images land in `screenshots/`. The script uses Playwright's Chromium if you installed it with `npx playwright install chromium`, and your installed Chrome otherwise.
-
-## Adding my details later
-
-Edit only [src/content/portfolio.ts](src/content/portfolio.ts). The comments at the top of that file mark the blocks. A Vite plugin copies that data into `index.html` when you run the dev server or `npm run build`, so the finished site contains real HTML, not text drawn by JavaScript at runtime.
+Edit only [`src/content/portfolio.ts`](src/content/portfolio.ts). A Vite plugin copies that data into `index.html` when you run the dev server or `npm run build`, so the finished site contains real HTML, not text drawn by JavaScript at runtime.
 
 | What you want to change | Where |
 | --- | --- |
 | GitHub, LinkedIn, email, resume | `contact` at the top of the file |
 | Profile photo | Put the image in `public/`, for example `public/portrait.webp`, then set `contact.photo` to `"/portrait.webp"` |
-| A project’s Source or Demo button | `projects[].source` and `projects[].demo` |
+| A project's Source or Demo button | `projects[].source` and `projects[].demo` |
 | Graveyard stones | the `graveyard` array |
 | Link to this site's code (footer and the pup) | `contact.repo` |
 
-Rules that are already built:
-
-- Leave a contact string as `""` and that link or photo is not rendered. There is no placeholder sentence on the page.
+- Leave a contact string as `""` and that link or photo is not rendered.
 - Leave a project `source` or `demo` as `""` and that button is not rendered.
-- Each graveyard object needs `name`, `years`, `whatHappened`, and `learned`. Replace every `[PLACEHOLDER]`. Add another object to the array to add a stone. You do not need to change a component or a stylesheet.
-- A stone that still contains `[PLACEHOLDER]` is not shown. Once at least one stone is filled in, the Project graveyard section, its nav link, and the graveyard in dog mode appear by themselves.
+- Each graveyard object needs `name`, `years`, `whatHappened`, `learned` and `repo` (`""` hides its Source button). A stone that still contains `[PLACEHOLDER]` is not shown. The graveyard section, its nav link and the graveyard in dog mode appear once at least one stone is filled in.
 - Email is the address only, such as `name@school.edu`. The page adds `mailto:`.
 - Resume can be a full URL or a file in `public/`, such as `"/resume.pdf"`.
 
-Then run `npm run build`. If a warning remains, that slot is still empty or still says `[PLACEHOLDER]`.
+`npm run build` prints a warning for every `[PLACEHOLDER]` and every empty contact field. The site still builds.
 
-The education score is `education.score`. The source notes list 9.67 in Education and 9.63 under Achievements. The page shows 9.67.
+</details>
 
-## Deploy on Amplify Hosting
+<details>
+<summary><b>Deploying to Amplify Hosting</b></summary>
 
-The repo includes [amplify.yml](amplify.yml) and an Amplify Gen 2 backend in `amplify/`.
+<br>
 
-1. Commit the project and push it to GitHub. This folder is a git repo only after `git init`; nothing has been pushed.
-2. In the Amplify console, create a new app and connect that repository. Amplify should detect the Gen 2 backend because `amplify/` and `amplify.yml` are present.
-3. The build spec installs dependencies with `npm ci --include=dev` (Amplify sets `NODE_ENV=production`, which would otherwise skip Vite and the Amplify CLI), deploys the backend with `npx ampx pipeline-deploy`, then runs `npm run build`. The site is a static Vite build. Artifacts are in `dist`.
-4. After the first backend deploy, the guestbook appears. Until `amplify_outputs.json` exists at build time, the guestbook is not shown and the rest of the site works.
+The live site is an Amplify Hosting app that is not connected to Git. Each release is deployed from the terminal, backend first:
 
-The guestbook stores a paw and a note of at most 140 characters in DynamoDB through Amplify Data (AppSync). Visitors use the Cognito identity pool’s unauthenticated role. There is no login form. They can create and read paws, not edit or delete them. The browser also waits 30 seconds between paws.
+1. **Backend.** `npx ampx pipeline-deploy --branch master --app-id <app-id>` deploys the backend in `amplify/` through CloudFormation and writes `amplify_outputs.json`.
+2. **Site.** `npm run build` bakes `amplify_outputs.json` into the page. Build before the backend exists and the guestbook is simply left out.
+3. **Upload.** Zip the contents of `dist/` and publish it to the `master` branch, for example with `aws amplify create-deployment` and `aws amplify start-deployment`.
 
-Local sandbox, once AWS credentials are configured:
+[`amplify.yml`](amplify.yml) runs the same steps if the app is ever connected to a Git repository. It installs with `npm ci --include=dev`, because Amplify's build image sets `NODE_ENV=production`, which would otherwise skip Vite and the Amplify CLI.
 
-```bash
-npx ampx sandbox
-```
+</details>
 
-That writes `amplify_outputs.json`, which is gitignored. Restart `npm run dev` and the Guestbook section shows up after Contact.
+<details>
+<summary><b>All the controls</b></summary>
 
-API keys are not used for the guestbook. Amplify’s current public-data guide recommends guest access through the identity pool because API keys expire.
+<br>
 
-## Controls
+**On the page**
 
-Human mode:
-
-- **Fetch!** (the section before Contact): pick a role or paste a job post and press **Throw the ball**. The pup brings back a one-page résumé built only from `portfolio.ts`, with a print button. The logic is in `src/agent/match.ts` and the animation and card in `src/human/fetchball.ts`; both load on first use.
-- **Ask the pup** in the hero, or the pup in the corner, opens the chat. Try "What does Naomi build?", "Show me the blockchain projects", "Turn the lights off" or "Let me be the dog". The pup answers only from the page and says so when it cannot find something.
-- The nav, the **Become the dog** buttons, or the pup in the hero start dog mode.
+- **Ask the pup** in the hero, or the pup in the corner, opens the chat. Try "What does Naomi build?", "Show me the blockchain projects", "Turn the lights off" or "Let me be the dog".
+- **Fetch!** (the section before Contact): pick a role or paste a job post, then press **Throw the ball**.
 - Poke the pumpkins and the ghost in the hero. Seven pokes start a candy rain.
-- Tap the moon, or the moon button in the header, for "lights out" (a dark theme). The choice is remembered.
-- Filter projects by AI & ML, Blockchain, or Web apps.
+- Tap the moon, or the moon button in the header, for "lights out". The choice is remembered.
+- Filter projects by AI & ML, Cloud & AWS, Blockchain or Web apps.
+- Leave a note on the guestbook at the end of the page.
 
-Dog mode:
+**In dog mode**
 
-- Scroll, or A and D, or the arrow keys, to walk. The pup can reach the far end of the village on any screen size.
-- On a phone: swipe sideways, swipe up and down, or hold the ◀ ▶ buttons next to the map. A hint says so the first time.
-- The mini-map shows where the pup is and jumps to a building. **Back to human** leaves dog mode.
-- Walk up to a building and press the bubble over the pup, or E, to open that section.
-- The cottage is About me, the school is Education, the quest board is Experience, the workshop is Skills, the market is Projects, the trophy hall is Achievements, and the mailbox is Contact.
-- The Ask button in the top bar opens the chat; asking the pup to "take me to the projects" walks it to the market.
-- Opening the cottage, the workshop, and the market lights the three memory lanterns and plays the ending.
-- S, or the Sniff button, shows scent trails. Dig spots open a line that is already on the page.
+- Scroll, A and D, or the arrow keys to walk. On a phone, swipe sideways or hold the ◀ ▶ buttons next to the map.
+- Walk up to a building and press the bubble over the pup, or E, to open it. The mini-map jumps to any building.
+- S, or the Sniff button, shows scent trails. Stand on a dig spot and press E to dig.
 - Costumes: pumpkin, bedsheet ghost, witch hat.
-- Sound is off until you turn it on.
+- Stop walking and the pup sits, then curls up and falls asleep.
+- Asking the pup to "take me to the projects" walks it to the market.
+- Sound is off until you turn it on. **Back to human** leaves dog mode.
 
-If the browser asks for less motion, the opening does not play, the layers move together, the hero critters and pop-in effects stay still, and the paw cursor stays off.
+If the browser asks for less motion, the opening does not play, the layers move together, the hero critters and pop-in effects stay still, and the paw cursor stays off. Every feature still works.
+
+</details>
+
+## Credits
+
+- **Art:** every illustration (the pup and its costumes, the village, the skill spirits, the icons, the favicon and the paw cursor) is an original SVG drawing in `src/art/`. No image files from elsewhere are used.
+- **Sound:** generated in the browser with the Web Audio API. No audio files.
+- **Fonts:** [Fredoka](https://fonts.google.com/specimen/Fredoka) and [Nunito](https://fonts.google.com/specimen/Nunito), self-hosted with Fontsource, both under the SIL Open Font License 1.1.
+- **Libraries:** React and React DOM (MIT) render the page to HTML at build time only; GSAP plays the animations in dog mode; the Amplify libraries power the guestbook.

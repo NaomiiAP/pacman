@@ -74,10 +74,8 @@ export type Job = {
 };
 
 /**
- * about-me.txt lists CGPA twice: 9.67 under Education and 9.63 under
- * Achievements. The education card shows 9.67. The 9.63 line is not
- * shown, so the page does not print two different scores. Change
- * `education.score` if you confirm the other figure.
+ * All personal content for the site. The page, the pup's answers and the
+ * Fetch résumé are all built from this one object.
  */
 export const portfolio = {
   name: 'Naomi Andrea Pereira',

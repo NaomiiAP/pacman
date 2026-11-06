@@ -9,3 +9,6 @@ screenshots
 playwright-report
 test-results
 unused-assets
+
+# Personal notes for the coding agent; kept locally, not published
+about-me.txt

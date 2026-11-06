@@ -189,7 +189,9 @@ function lanternFor(node: HTMLElement): 'about' | 'skills' | 'projects' | null {
 }
 
 function openNode(node: HTMLElement): void {
-  if (dialog.open) dialog.close();
+  // Swap content in place when the dialog is already open. Closing and
+  // reopening it would queue a 'close' event whose restore() runs after the
+  // new node is in, and would pull it straight back out (an empty dialog).
   restore();
   const hideAgain = Boolean(node.hidden);
   node.hidden = false;
@@ -199,7 +201,7 @@ function openNode(node: HTMLElement): void {
   if (heading instanceof HTMLElement && heading.id) dialog.setAttribute('aria-labelledby', heading.id);
   else dialog.setAttribute('aria-label', 'Portfolio section');
   if (!reduced()) void playGust();
-  dialog.showModal();
+  if (!dialog.open) dialog.showModal();
   slot.scrollTop = 0;
   const key = lanternFor(node);
   if (key) {
@@ -502,7 +504,10 @@ function buildDialogs(): void {
   slot = el('div', 'dialog-slot');
   card.append(close, slot);
   dialog.append(card);
-  dialog.addEventListener('close', () => restore());
+  // Only put the section back if the dialog is still closed when this runs.
+  dialog.addEventListener('close', () => {
+    if (!dialog.open) restore();
+  });
 
   digDialog = el('dialog', 'dig-dialog');
   const digCard = el('div', 'dialog-card dig-card');

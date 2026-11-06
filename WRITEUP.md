@@ -2,8 +2,8 @@
 
 **Naomi Andrea Pereira** · Full Stack Developer and AI/ML Engineer · Bengaluru
 
-- **Live site:** _add your Amplify URL here, for example https://main.xxxxxxxx.amplifyapp.com_
-- **Code:** _add your GitHub repository link here_
+- **Live site:** https://master.d3kz5bg2dsjqj0.amplifyapp.com
+- **Code:** https://github.com/paccmann218/portfolio
 
 > Everything in _italics_ above, and every paragraph marked ✏️, still needs your own words before you submit. The rest describes what the site really does.
 
@@ -11,7 +11,7 @@
 
 - A kawaii Halloween portfolio with all the core sections: **About me, Education, Experience, Skills, Projects, Achievements** and Contact. Every word is real HTML, so it reads with or without JavaScript.
 - **Creative feature: the spirit pup, with three tricks.** **Ask** it anything about me and it answers from my portfolio with a tiny retrieval agent written from scratch, then moves you around the page. Play **Fetch!**: pick a role or paste a job post, throw the ball, and the pup runs back with a one-page résumé tailored to it. Or **become the dog** and walk my village, where every building opens part of the portfolio.
-- **On AWS:** hosted and built by **AWS Amplify Hosting** from GitHub, with an **Amplify Gen 2** guestbook on **AppSync**, **DynamoDB** and **Cognito**.
+- **On AWS:** hosted on **AWS Amplify Hosting** and deployed from my laptop with the **AWS CLI**, with an **Amplify Gen 2** guestbook on **AppSync**, **DynamoDB** and **Cognito**.
 - **Checked:** mobile Lighthouse 98–99 performance, 100 accessibility, 100 best practices, 100 SEO; zero issues from the axe accessibility checker in light mode, dark mode, on a phone, in dog mode and with the chat open.
 
 ## ✏️ What I wanted it to feel like
@@ -95,29 +95,19 @@ All personal text lives in one file, `src/content/portfolio.ts`. React renders i
 
 | Service | What it does here |
 | --- | --- |
-| **AWS Amplify Hosting** | Connected to the GitHub repo. Every push runs the build in `amplify.yml`, then serves the site over HTTPS from a global CDN. |
-| **Amplify Gen 2** | Defines the guestbook backend in TypeScript (`amplify/`) and deploys it in the same pipeline with `npx ampx pipeline-deploy`. |
+| **AWS Amplify Hosting** | Serves the site over HTTPS from a global CDN. The app isn't connected to Git: I build on my laptop and upload each version with the AWS CLI. Every deployment so far has passed Amplify's deploy and verify steps. |
+| **Amplify Gen 2** | Defines the guestbook backend in TypeScript (`amplify/`). `npx ampx pipeline-deploy` turns it into CloudFormation stacks for Cognito, AppSync and DynamoDB. |
 | **AWS AppSync** | The GraphQL API for the guestbook, generated from the `PawPrint` model. |
 | **Amazon DynamoDB** | Stores each paw: a note of at most 140 characters and the costume the pup was wearing. |
 | **Amazon Cognito** | An identity pool gives visitors temporary guest credentials, so there's no login form and no API key that can expire. |
 
-The build spec:
+How a release goes out, all from the terminal:
 
-```yaml
-backend:
-  phases:
-    build:
-      commands:
-        - npm ci --cache .npm --prefer-offline --include=dev
-        - npx ampx pipeline-deploy --branch $AWS_BRANCH --app-id $AWS_APP_ID
-frontend:
-  phases:
-    build:
-      commands:
-        - npm run build
-  artifacts:
-    baseDirectory: dist
-```
+1. **Backend first.** `npx ampx pipeline-deploy --branch master --app-id <app id>` deploys the guestbook stacks and writes `amplify_outputs.json`.
+2. **Then the site.** `npm run build` bakes that config into the page, so the guestbook knows where its API lives.
+3. **Upload.** The `dist/` folder is zipped and published to the `master` branch of the Amplify app with the AWS CLI. Amplify deploys and verifies it in about 8 seconds.
+
+The order matters: build before the backend exists and the guestbook is left out of the site. (`amplify.yml` is also in the repo, so the same steps would run if the app were ever connected to Git.)
 
 Choices worth noticing:
 
@@ -127,24 +117,24 @@ Choices worth noticing:
 
 ## Screenshots to attach
 
-From `npm run screenshots` (saved in `screenshots/`):
+Portfolio screenshots, taken from the live site (in `screenshots/article/`):
 
-- `human-1440-hero.png`: the hero with both ways to explore.
-- `human-1440-chat.png`: the pup filtering projects and refusing to invent an answer.
-- `human-1440-fetch.png`: Fetch! with a pasted job post and the résumé it brought back.
-- `human-1440.png`: the whole page.
-- `human-1440-dark.png`: lights out.
-- `human-390-hero.png` and `human-390.png`: the phone layout.
-- `dog-1440.png`, `dog-1440-sniff.png`, `dog-1440-about.png` and `dog-1440-ending.png`: dog mode.
-- `dog-390.png`: dog mode on a phone with the walk buttons.
+- `01-hero`, `02-about-me`, `03-skills`, `04-projects`, `05-achievements`: the core sections.
+- `06-project-graveyard`, `08-contact`, `09-guestbook`: the rest of the page.
+- `10-ask-the-pup`: the pup answering from the page, with its "Found in" source.
+- `07-fetch` and `11-fetch-resume`: Fetch! and the résumé it brings back.
+- `12-dark-mode`: lights out.
+- `13-dog-village` to `18-dog-lanterns-ending`: walking the village, opening a building, sniffing and digging, and the ending.
+- `19-phone-hero`, `20-phone-menu`, `21-phone-projects`: the phone layout.
 - `docs/architecture.png`: the diagram above.
 
-From the AWS console (take these yourself after deploying):
+From the AWS console (us-east-1):
 
-- the Amplify app with a successful build and its domain;
-- the AppSync API;
-- the DynamoDB `PawPrint` table with a few paws in it;
-- the Cognito identity pool.
+- the Amplify app `portfolio`: the `master` branch, its domain and the deployment history;
+- CloudFormation: the `amplify-d3kz5bg2dsjqj0-master-branch-…` stacks;
+- AppSync: the `amplifyData` API and its `PawPrint` schema;
+- DynamoDB: the `PawPrint` table with paws in it;
+- Cognito: the identity pool with guest access turned on.
 
 ## What I learned
 

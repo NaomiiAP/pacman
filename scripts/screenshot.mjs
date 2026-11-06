@@ -159,9 +159,11 @@ try {
     await dog.locator('#open-near', { hasText: openLabel[name] }).waitFor();
     await dog.locator('#open-near').click();
     await dog.locator('.section-dialog[open]').waitFor();
-    await dog.keyboard.press('Escape');
+    if (name !== 'Market') await dog.keyboard.press('Escape');
     if (name === 'Market') {
-      // About, Skills and Projects are all lit now, so the ending opens.
+      // About, Skills and Projects are all lit now, so the ending opens. Stay on
+      // the market like a visitor reading it: the ending must replace it in the
+      // open dialog (this used to leave the dialog empty).
       await dog.locator('.section-dialog').getByRole('heading', { name: 'The lanterns are lit' }).waitFor();
       await dog.screenshot({ path: path.join(root, 'screenshots', 'dog-1440-ending.png') });
       await dog.keyboard.press('Escape');
