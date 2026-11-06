@@ -265,7 +265,7 @@ export const portfolio = {
   achievements: [
     'First Commit Hackathon (Ship It track) — Winner — WeMakeDevs × AWS Bharat Builds Tour — September 2026',
     "Google X Deepstation Hackathon — 1st Place — MSRIT Bangalore — May 2026",
-    'Code2Create 2026 — 1st Place — ACM RIT Student Chapter, Ramaiah Institute of Technology, Bengaluru, with BMSCE ACM, MIT ACM, NITK ACM and RVCE ACM — May 2026',
+    'Code2Create 2026 — 1st Place — MSRIT ACM — May 2026',
     'Athernex Hackathon — 2nd Place — BMSCE Bangalore — April 2026',
     'Hack-A-War Hackathon — 1st Place — MSRIT Bangalore — April 2026',
     'Mindscape Hackathon — 2nd Place — BNMIT Bangalore — July 2025',
