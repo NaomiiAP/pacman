@@ -36,41 +36,70 @@ export async function mountGuestbook(host: HTMLElement | null, outputs: Record<s
   host.hidden = false;
   host.replaceChildren();
 
+  const head = document.createElement('div');
+  head.className = 'gb-head';
   const heading = document.createElement('h3');
-  heading.textContent = 'Paw-print wall';
+  const headPaw = document.createElement('span');
+  headPaw.className = 'paw-mark';
+  headPaw.setAttribute('aria-hidden', 'true');
+  heading.append(headPaw, 'Paw-print wall');
+  const sub = document.createElement('p');
+  sub.className = 'gb-sub';
+  sub.textContent = 'Leave a paw and a short note for the pup.';
+  head.append(heading, sub);
 
   const form = document.createElement('form');
+  form.className = 'gb-form';
   const label = document.createElement('label');
   label.htmlFor = 'paw-message';
-  label.textContent = 'Leave a paw and a short note';
-  const field = document.createElement('textarea');
+  label.className = 'visually-hidden';
+  label.textContent = 'Your note';
+  const field = document.createElement('input');
+  field.type = 'text';
   field.id = 'paw-message';
   field.name = 'message';
   field.maxLength = 140;
   field.required = true;
-  field.rows = 3;
+  field.autocomplete = 'off';
+  field.placeholder = 'Say hi to the pup...';
+  const submit = document.createElement('button');
+  submit.type = 'submit';
+  submit.className = 'btn btn-primary btn-small';
+  submit.textContent = 'Leave a paw';
+  const row = document.createElement('div');
+  row.className = 'gb-row';
+  row.append(field, submit);
+  const status = document.createElement('p');
+  status.setAttribute('role', 'status');
   const count = document.createElement('p');
   count.className = 'paw-count';
   count.textContent = '0 / 140';
-  const submit = document.createElement('button');
-  submit.type = 'submit';
-  submit.className = 'btn';
-  submit.textContent = 'Leave a paw';
-  const status = document.createElement('p');
-  status.setAttribute('role', 'status');
+  const meta = document.createElement('div');
+  meta.className = 'gb-meta';
+  meta.append(status, count);
   const wall = document.createElement('ul');
   wall.className = 'paw-wall';
+  const more = document.createElement('button');
+  more.type = 'button';
+  more.className = 'gb-more';
+  more.hidden = true;
+  let showAll = false;
+  const SHOWN = 9;
 
   const renderWall = (items: typeof listed.data) => {
     const sorted = [...items].sort((a, b) => (b.createdAt ?? '').localeCompare(a.createdAt ?? ''));
     wall.replaceChildren();
     if (!sorted.length) {
       const empty = document.createElement('li');
+      empty.className = 'gb-empty';
       empty.textContent = 'No paws yet. Be the first.';
       wall.append(empty);
+      more.hidden = true;
       return;
     }
-    for (const item of sorted) {
+    more.hidden = sorted.length <= SHOWN;
+    more.textContent = showAll ? 'Show fewer paws' : `Show all ${sorted.length} paws`;
+    for (const item of showAll ? sorted : sorted.slice(0, SHOWN)) {
       const li = document.createElement('li');
       const paw = document.createElement('span');
       paw.className = 'paw-mark';
@@ -114,8 +143,8 @@ export async function mountGuestbook(host: HTMLElement | null, outputs: Record<s
         field.value = '';
         count.textContent = '0 / 140';
         status.textContent = 'The paw is on the wall.';
-        renderWall([result.data, ...listed.data]);
         listed.data.unshift(result.data);
+        renderWall(listed.data);
       })
       .catch(() => {
         status.textContent = 'The wall could not save that paw.';
@@ -125,7 +154,12 @@ export async function mountGuestbook(host: HTMLElement | null, outputs: Record<s
       });
   });
 
-  form.append(label, field, count, submit, status);
-  host.append(heading, form, wall);
+  more.addEventListener('click', () => {
+    showAll = !showAll;
+    renderWall(listed.data);
+  });
+
+  form.append(label, row, meta);
+  host.append(head, form, wall, more);
   renderWall(listed.data);
 }
