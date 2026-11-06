@@ -161,6 +161,27 @@ To check the guest permissions against the deployed backend, run [`scripts/guest
 bash scripts/guest-check.sh
 ```
 
+The deployed resources in the AWS console (account ID pixelated):
+
+<table>
+  <tr>
+    <td width="50%"><img src="docs/screenshots/aws-amplify.jpg" alt="Amplify console: the portfolio app with the master branch deployed"></td>
+    <td width="50%"><img src="docs/screenshots/aws-cloudformation.jpg" alt="CloudFormation: the PawPrint nested stack at CREATE_COMPLETE"></td>
+  </tr>
+  <tr>
+    <td align="center"><sub>Amplify Hosting: <code>master</code> deployed as the production branch</sub></td>
+    <td align="center"><sub>CloudFormation: the <code>PawPrint</code> nested stack</sub></td>
+  </tr>
+  <tr>
+    <td width="50%"><img src="docs/screenshots/aws-cognito.jpg" alt="Cognito identity pool with guest access Active"></td>
+    <td width="50%"><img src="docs/screenshots/aws-dynamodb.jpg" alt="DynamoDB: items in the PawPrint table"></td>
+  </tr>
+  <tr>
+    <td align="center"><sub>Cognito: guest access Active, mapped to the guest role</sub></td>
+    <td align="center"><sub>DynamoDB: notes left through the live guestbook</sub></td>
+  </tr>
+</table>
+
 ## Built with
 
 - **Vite + TypeScript.** The page is rendered to static HTML at build time with React, and React is not shipped to the browser. Small TypeScript modules add the interactions, and the chat, Fetch and dog mode only load when someone uses them.
