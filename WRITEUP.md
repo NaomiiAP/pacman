@@ -74,7 +74,7 @@ This one is for whoever is hiring. In the Fetch! section, pick a role (AI / ML e
 
 ### ✏️ Why this is me
 
-My focus is agentic systems and RAG, and I've collected eight hackathon awards, three of them first place. So I wanted a creative feature that is both: a small agent that is honest about what it knows, wrapped in an original Halloween village you can walk around.
+My focus is agentic systems and RAG, and I've collected nine hackathon awards, four of them first place. So I wanted a creative feature that is both: a small agent that is honest about what it knows, wrapped in an original Halloween village you can walk around.
 
 ## The portfolio itself
 
@@ -83,7 +83,7 @@ My focus is agentic systems and RAG, and I've collected eight hackathon awards, 
 - **Experience:** three internships (HPE, Samsung R&D Institute, Fintervue) on a winding "quest log", each with a hand-drawn badge.
 - **Skills:** focus areas plus seven groups of tools and languages.
 - **Projects:** six projects with filters (AI & ML, Cloud & AWS, Blockchain, Web apps), live demos and source links. RepoWatch, an always-on issue-triage agent on AWS Lambda and Amazon Bedrock, comes first.
-- **Achievements:** eight hackathon results, three of them first place.
+- **Achievements:** nine hackathon results, four of them first place.
 - **Contact:** GitHub and LinkedIn.
 - **Guestbook:** a cork board at the end of the page. Visitors pin a short note with a paw, and it stays up for the next visitor.
 

@@ -265,6 +265,7 @@ export const portfolio = {
   achievements: [
     'First Commit Hackathon (Ship It track) — Winner — WeMakeDevs × AWS Bharat Builds Tour — September 2026',
     "Google X Deepstation Hackathon — 1st Place — MSRIT Bangalore — May 2026",
+    'Code2Create 2026 — 1st Place — ACM RIT Student Chapter, Ramaiah Institute of Technology, Bengaluru, with BMSCE ACM, MIT ACM, NITK ACM and RVCE ACM — May 2026',
     'Athernex Hackathon — 2nd Place — BMSCE Bangalore — April 2026',
     'Hack-A-War Hackathon — 1st Place — MSRIT Bangalore — April 2026',
     'Mindscape Hackathon — 2nd Place — BNMIT Bangalore — July 2025',
@@ -282,18 +283,16 @@ export const portfolio = {
     {
       name: 'Assignment Decoder',
       years: '2026–2026',
-      whatHappened:
-        'A weekend build for the AWS Weekend Challenge: drop in an assignment PDF and Amazon Bedrock (Nova Lite) pulls out the due date, deliverables, effort, a step-by-step plan and the easy-to-miss requirements. It shipped on Amplify Hosting. The live app has since been taken down, but the code is still on GitHub.',
-      learned:
-        'Scope beats cleverness. One Bedrock model and a careful prompt covered the core feature, the plain Amplify Hosting path beat the fancier OpenNext one when account limits got in the way, and an IAM compute role is safer than AWS keys in the app.',
+      whatHappened: 'Turned assignment PDFs into a due date and a plan with Bedrock. A weekend build, now offline.',
+      learned: 'Scope beats cleverness: one model and a good prompt were enough.',
       repo: 'https://github.com/NaomiiAP/assignment-decoder',
     },
     {
-      name: '[PLACEHOLDER] Second buried project',
-      years: '[PLACEHOLDER] years',
-      whatHappened: '[PLACEHOLDER] One line about what happened.',
-      learned: '[PLACEHOLDER] What you learned from setting it down.',
-      repo: '',
+      name: 'DawnVerse',
+      years: '2026–2026',
+      whatHappened: 'A Lambda that woke at 6 AM to write a fresh poem with Bedrock. Its gallery is offline now.',
+      learned: 'An always-on agent is mostly the trigger, not the model.',
+      repo: 'https://github.com/NaomiiAP/dawnverse',
     },
     {
       name: '[PLACEHOLDER] Third buried project',

@@ -2117,7 +2117,8 @@ a {
   padding: 1.4rem;
   border: 2.5px solid var(--line);
   border-radius: 120px 120px 24px 24px;
-  background: linear-gradient(180deg, var(--lilac-soft), var(--surface));
+  /* weathered stone at the top, fading down */
+  background: linear-gradient(180deg, color-mix(in srgb, #b8ad9c 34%, var(--surface)), var(--surface));
   box-shadow: var(--chunk-lg);
   text-align: center;
 }
