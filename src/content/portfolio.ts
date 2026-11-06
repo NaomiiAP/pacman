@@ -55,6 +55,8 @@ export type GraveEntry = {
   years: string;
   whatHappened: string;
   learned: string;
+  /** Link to the code. Leave "" to hide the Source button. */
+  repo: string;
 };
 
 export type SkillGroup = {
@@ -255,7 +257,7 @@ export const portfolio = {
       stack: 'MobileNetV2, NLP, Yield Prediction',
       summary:
         'Multilingual farming assistant with crop disease detection, yield prediction, and a voice-enabled chatbot for accessibility.',
-      source: '',
+      source: 'https://github.com/NaomiiAP/AgriAssist',
       demo: '',
     },
   ] satisfies Project[],
@@ -274,26 +276,31 @@ export const portfolio = {
   /**
    * Project graveyard. Replace every [PLACEHOLDER].
    * Each object becomes one tombstone and one card.
-   * Fields: name, years, whatHappened, learned.
+   * Fields: name, years, whatHappened, learned, repo.
    */
   graveyard: [
     {
-      name: '[PLACEHOLDER] First buried project',
-      years: '[PLACEHOLDER] years',
-      whatHappened: '[PLACEHOLDER] One line about what happened.',
-      learned: '[PLACEHOLDER] What you learned from setting it down.',
+      name: 'Assignment Decoder',
+      years: '2026–2026',
+      whatHappened:
+        'A weekend build for the AWS Weekend Challenge: drop in an assignment PDF and Amazon Bedrock (Nova Lite) pulls out the due date, deliverables, effort, a step-by-step plan and the easy-to-miss requirements. It shipped on Amplify Hosting. The live app has since been taken down, but the code is still on GitHub.',
+      learned:
+        'Scope beats cleverness. One Bedrock model and a careful prompt covered the core feature, the plain Amplify Hosting path beat the fancier OpenNext one when account limits got in the way, and an IAM compute role is safer than AWS keys in the app.',
+      repo: 'https://github.com/NaomiiAP/assignment-decoder',
     },
     {
       name: '[PLACEHOLDER] Second buried project',
       years: '[PLACEHOLDER] years',
       whatHappened: '[PLACEHOLDER] One line about what happened.',
       learned: '[PLACEHOLDER] What you learned from setting it down.',
+      repo: '',
     },
     {
       name: '[PLACEHOLDER] Third buried project',
       years: '[PLACEHOLDER] years',
       whatHappened: '[PLACEHOLDER] One line about what happened.',
       learned: '[PLACEHOLDER] What you learned from setting it down.',
+      repo: '',
     },
   ] satisfies GraveEntry[],
 };

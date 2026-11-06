@@ -620,6 +620,13 @@ export function HumanPage(): ReactNode {
                   <p>{entry.whatHappened}</p>
                   <h4>What was learned</h4>
                   <p>{entry.learned}</p>
+                  {safeUrl(entry.repo) ? (
+                    <a className="btn btn-small btn-plain grave-link" href={safeUrl(entry.repo) ?? undefined} target="_blank" rel="noopener noreferrer">
+                      <Icon name="code" />
+                      Source
+                      <NewTab />
+                    </a>
+                  ) : null}
                 </article>
               ))}
             </div>

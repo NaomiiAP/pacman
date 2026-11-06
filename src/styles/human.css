@@ -2101,8 +2101,14 @@ a {
 /* ---------- Graveyard ---------- */
 .grave-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 340px));
+  justify-content: center;
   gap: clamp(16px, 2vw, 22px);
+}
+
+.grave-link {
+  justify-self: center;
+  margin-top: 0.6rem;
 }
 
 .grave-card {
@@ -3666,6 +3672,19 @@ body.footer-in-view .puppy-peek .peek-bubble {
   }
 }
 
+/* Wide screens show an icon on every link. Let the bar grow a little past the
+   1180px content width and tighten the links, so "Become the dog" stays inside. */
+@media (min-width: 1501px) {
+  .topbar-inner {
+    max-width: 1320px;
+  }
+
+  .site-nav a {
+    gap: 0.3rem;
+    padding: 0.4rem 0.6rem;
+  }
+}
+
 @media (max-width: 860px) {
   .quest::before {
     left: 46px;
@@ -3704,7 +3723,8 @@ body.footer-in-view .puppy-peek .peek-bubble {
   }
 }
 
-@media (max-width: 1180px) {
+/* The full link row needs about 1150px, so switch to the menu button below that. */
+@media (max-width: 1240px) {
   .menu-toggle {
     display: inline-grid;
   }
