@@ -1,6 +1,6 @@
 import type { Portfolio } from './portfolio.ts';
 
-const CONTACT_FIELDS = ['github', 'linkedin', 'email', 'resume', 'photo'] as const;
+const CONTACT_FIELDS = ['github', 'linkedin', 'email', 'resume', 'photo', 'repo'] as const;
 
 function walkPlaceholders(value: unknown, path: string, into: string[]): void {
   if (typeof value === 'string') {

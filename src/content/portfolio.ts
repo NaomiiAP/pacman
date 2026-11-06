@@ -32,6 +32,8 @@ export type Contact = {
   resume: string;
   /** URL or a public/ path such as /portrait.webp. Leave "" to hide. */
   photo: string;
+  /** GitHub link to this website's own code, shown in the footer. Leave "" to hide. */
+  repo: string;
 };
 
 export type Project = {
@@ -56,9 +58,8 @@ export type GraveEntry = {
 };
 
 export type SkillGroup = {
+  /** Picks the little drawing shown next to the group. */
   id: string;
-  /** Original spirit name. The skills below are the portfolio text. */
-  spirit: string;
   title: string;
   skills: string[];
 };
@@ -91,6 +92,7 @@ export const portfolio = {
     email: '',
     resume: '',
     photo: '',
+    repo: 'https://github.com/paccmann218/portfolio',
   } satisfies Contact,
 
   education: {
@@ -133,43 +135,36 @@ export const portfolio = {
   skills: [
     {
       id: 'loomling',
-      spirit: 'Loomling',
       title: 'Web development',
       skills: ['HTML', 'CSS', 'JavaScript', 'TypeScript', 'React.js', 'Node.js', 'Next.js', 'FastAPI', 'Flask'],
     },
     {
-      id: 'plotmole',
-      spirit: 'Plotmole',
+      id: 'plotkin',
       title: 'Libraries and tools',
       skills: ['NumPy', 'Pandas', 'Matplotlib'],
     },
     {
       id: 'glyphmoth',
-      spirit: 'Glyphmoth',
       title: 'Languages',
       skills: ['Python', 'C', 'C++', 'Dart', 'Solidity'],
     },
     {
       id: 'brushwisp',
-      spirit: 'Brushwisp',
       title: 'Web design',
       skills: ['Figma', 'Canva'],
     },
     {
-      id: 'shellduck',
-      spirit: 'Shellduck',
+      id: 'brewbase',
       title: 'Databases',
       skills: ['MySQL', 'MongoDB'],
     },
     {
       id: 'kitbranch',
-      spirit: 'Kitbranch',
       title: 'Other',
       skills: ['Git', 'REST APIs', 'Problem Solving', 'Blockchain'],
     },
     {
       id: 'fieldowl',
-      spirit: 'Fieldowl',
       title: 'Also used in project work',
       skills: [
         'BERT',
@@ -191,7 +186,6 @@ export const portfolio = {
     },
     {
       id: 'lanternkit',
-      spirit: 'Lanternkit',
       title: 'Focus areas',
       skills: [
         'Agentic systems',
@@ -204,6 +198,16 @@ export const portfolio = {
   ] satisfies SkillGroup[],
 
   projects: [
+    {
+      id: 'project-repowatch',
+      name: 'RepoWatch — Always-On GitHub Issue Triage Agent',
+      shortName: 'RepoWatch',
+      stack: 'AWS Lambda, Amazon Bedrock Nova, EventBridge Scheduler, CloudWatch Logs, AWS SAM, GitHub API',
+      summary:
+        'An always-on AI agent that checks open GitHub issues every 10 minutes, asks Amazon Bedrock Nova to triage each new one, then posts the severity, complexity, area and first steps as a comment and adds labels. Built for the AWS Builder Center Always-On Agent Weekend Challenge.',
+      source: 'https://github.com/NaomiiAP/Always-on-AI-Agent--RepoWatch',
+      demo: '',
+    },
     {
       id: 'project-accps',
       name: 'ACCPS — AI Content Copyright System',
@@ -257,6 +261,7 @@ export const portfolio = {
   ] satisfies Project[],
 
   achievements: [
+    'First Commit Hackathon (Ship It track) — Winner — WeMakeDevs × AWS Bharat Builds Tour — September 2026',
     "Google X Deepstation Hackathon — 1st Place — MSRIT Bangalore — May 2026",
     'Athernex Hackathon — 2nd Place — BMSCE Bangalore — April 2026',
     'Hack-A-War Hackathon — 1st Place — MSRIT Bangalore — April 2026',

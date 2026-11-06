@@ -1,0 +1,188 @@
+/* The spirit pup, shared by the human page and dog mode.
+   A parent picks the pose with .is-idle, .is-walk, .is-sit or .is-sleep,
+   and the costume with data-costume. */
+
+.pup-art {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.pup-art .pose,
+.pup-art .costume,
+.pup-head-art .costume {
+  display: none;
+}
+
+.is-idle .pup-art .pose-stand,
+.is-walk .pup-art .pose-stand,
+.is-sit .pup-art .pose-sit,
+.is-sleep .pup-art .pose-sleep {
+  display: inline;
+}
+
+[data-costume='witch'] .pup-art .costume-witch,
+[data-costume='pumpkin'] .pup-art .costume-pumpkin,
+[data-costume='ghost'] .pup-art .costume-ghost,
+[data-costume='grad'] .pup-art .costume-grad,
+.pup-head-art.show-witch .costume-witch,
+.pup-head-art.show-pumpkin .costume-pumpkin,
+.pup-head-art.show-ghost .costume-ghost,
+.pup-head-art.show-grad .costume-grad {
+  display: inline;
+}
+
+.pup-art .pup-tail,
+.pup-art .leg,
+.pup-art .pup-eyes,
+.pup-art .pup-head,
+.pup-art .pup-wisp,
+.pup-art .pose,
+.pup-head-art .pup-eyes {
+  transform-box: fill-box;
+}
+
+.pup-art .pup-tail {
+  transform-origin: 92% 88%;
+}
+
+.pup-art .pose-sit .pup-tail {
+  transform-origin: 96% 92%;
+}
+
+.pup-art .leg {
+  transform-origin: 50% 10%;
+}
+
+.pup-art .pup-eyes,
+.pup-head-art .pup-eyes {
+  transform-origin: 50% 50%;
+  animation: pup-blink 5.5s infinite;
+}
+
+.pup-art .pup-wisp {
+  transform-origin: 50% 100%;
+  animation: pup-flicker 1.4s ease-in-out infinite;
+}
+
+.pup-art .pup-head {
+  transform-origin: 50% 80%;
+}
+
+.is-idle .pup-art .pup-tail,
+.is-sit .pup-art .pup-tail {
+  animation: pup-wag 1.1s ease-in-out infinite;
+}
+
+.is-idle .pup-art .pup-head {
+  animation: pup-tilt 4s ease-in-out infinite;
+}
+
+.is-walk .pup-art .pup-tail {
+  animation: pup-wag 0.32s ease-in-out infinite;
+}
+
+.is-walk .pup-art .pose-stand {
+  animation: pup-trot 0.2s ease-in-out infinite alternate;
+}
+
+.is-walk .pup-art .leg-nf,
+.is-walk .pup-art .leg-fb {
+  animation: pup-step 0.4s ease-in-out infinite alternate;
+}
+
+.is-walk .pup-art .leg-nb,
+.is-walk .pup-art .leg-ff {
+  animation: pup-step 0.4s ease-in-out infinite alternate-reverse;
+}
+
+.is-sleep .pup-art .pose-sleep {
+  transform-origin: 50% 100%;
+  animation: pup-snooze 3.2s ease-in-out infinite;
+}
+
+.is-sleep .pup-art .pup-eyes {
+  animation: none;
+}
+
+.is-sleep .pup-art .pup-wisp {
+  opacity: 0.6;
+}
+
+@keyframes pup-wag {
+  0%,
+  100% {
+    transform: rotate(-9deg);
+  }
+  50% {
+    transform: rotate(11deg);
+  }
+}
+
+@keyframes pup-step {
+  from {
+    transform: rotate(-18deg);
+  }
+  to {
+    transform: rotate(18deg);
+  }
+}
+
+@keyframes pup-trot {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-3px);
+  }
+}
+
+@keyframes pup-blink {
+  0%,
+  93%,
+  100% {
+    transform: scaleY(1);
+  }
+  96% {
+    transform: scaleY(0.1);
+  }
+}
+
+@keyframes pup-tilt {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  45%,
+  60% {
+    transform: rotate(-5deg);
+  }
+}
+
+@keyframes pup-flicker {
+  0%,
+  100% {
+    transform: scale(1) rotate(-3deg);
+  }
+  50% {
+    transform: scale(1.12, 0.92) rotate(4deg);
+  }
+}
+
+@keyframes pup-snooze {
+  0%,
+  100% {
+    transform: scaleY(1);
+  }
+  50% {
+    transform: scaleY(0.96);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pup-art *,
+  .pup-head-art * {
+    animation: none !important;
+  }
+}

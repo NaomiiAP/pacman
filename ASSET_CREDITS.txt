@@ -1,0 +1,31 @@
+NOT USED BY THE CURRENT SITE. The village and the pup are now original SVG (see CREDITS.md).
+These files were used by an earlier version. They now sit in unused-assets/, which is gitignored and not deployed.
+
+Asset credits for scenery used in the earlier village. The dog sprite is not part of these packs.
+
+GothicVania Town
+- Creator: Luis Zuno (ansimuz)
+- Source page: https://opengameart.org/content/gothicvania-town
+- Also published at: https://ansimuz.itch.io/gothicvania-town
+- License: CC0 1.0 / public domain. Commercial use is allowed. Credit is not required.
+- Used files: town-sky.png, town-hills.png, cobble.png, house-a.png, house-b.png, house-c.png, street-lamp.png, barrel.png, sign.png, well.png
+- Not used: characters, music, title screens, Phaser demo
+
+GothicVania Cemetery
+- Creator: Luis Zuno (ansimuz)
+- Source page: https://opengameart.org/content/gothicvania-cemetery-pack
+- Also published at: https://ansimuz.itch.io/gothicvania-cemetery
+- License: CC0 1.0 / public domain. Commercial use is allowed. Credit is not required.
+- Used files: grave-moon.png, tree-1.png, tree-2.png, bush-small.png, bush-large.png, grave-1.png, grave-2.png, statue.png
+- Not used: enemies, player character, music, title screens
+
+Packs considered and not used
+- Nasha's Cozy Autumn & Halloween Pack: free for commercial projects, but the art is 3/4 top-down. The dog walks in side view, so the houses would face the wrong way.
+- Haunted Hollow by bubbabba: top-down, and the full pack is paid.
+- KILN HALLOWEEN sampler: free for commercial projects, top-down graveyard.
+- Maygetsu Cozy Halloween: paid, top-down.
+- Pumpkin Garden tiles (NettySvit, CC0): top-down RPG tiles, wrong view.
+- 32x32 House (Edarap, CC0): side view, but a timber platform on stilts, not a village house.
+- Sideview terrain and village tileset (scrybapp, CC0): side view, but a blue silhouette set that does not match the dog.
+
+The earlier dog sprite, now unused-assets/dogs/cream-pup.png, was not edited.

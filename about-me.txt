@@ -109,10 +109,17 @@ PROJECTS
    Source: not provided
    Demo: not provided
 
+6. RepoWatch — Always-On GitHub Issue Triage Agent
+   Stack: AWS Lambda (Node.js), Amazon Bedrock Nova, EventBridge Scheduler, CloudWatch Logs, AWS SAM, GitHub API
+   What it is: An always-on AI agent that checks open GitHub issues every 10 minutes, asks Amazon Bedrock Nova to triage each new issue, posts the decision as a comment and adds labels. Built for the AWS Builder Center Always-On Agent Weekend Challenge.
+   Source: https://github.com/NaomiiAP/Always-on-AI-Agent--RepoWatch
+   Demo: not provided
+
 ================================================================================
 ACHIEVEMENTS
 ================================================================================
 
+- First Commit Hackathon (Ship It track) — Winner — WeMakeDevs × AWS Bharat Builds Tour — September 2026
 - Google X Deepstation Hackathon — 1st Place — MSRIT Bangalore — May 2026
 - Athernex Hackathon — 2nd Place — BMSCE Bangalore — April 2026
 - Hack-A-War Hackathon — 1st Place — MSRIT Bangalore — April 2026

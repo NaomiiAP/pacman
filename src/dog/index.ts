@@ -1,18 +1,24 @@
 import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import '../styles/dog.css';
-import { VillageAudio } from './audio';
-import { createDog, type Costume, type Pose } from './dog';
-import { WORLD_WIDTH, buildWorld, updateTrails, type Target } from './scene';
-
-gsap.registerPlugin(ScrollTrigger);
+import { cloud, moon } from '../art/critters.ts';
+import { icon, lanternSticker } from '../art/icons.ts';
+import { pupArt, pupHead } from '../art/pup.ts';
+import { porch } from '../art/village.ts';
+import { VillageAudio } from './audio.ts';
+import { createDog, type Costume, type Pose } from './dog.ts';
+import { WORLD_WIDTH, buildWorld, updateTrails, type Place, type Target } from './scene.ts';
 
 const OPENING_KEY = 'naomi-spirit-opening-seen';
 const COSTUME_KEY = 'naomi-spirit-costume';
 const SOUND_KEY = 'naomi-spirit-sound';
 
+/** The pup wakes at the cottage door and can walk to the far fence. */
+const START_X = 190;
+const END_X = WORLD_WIDTH - 230;
+
 const reduced = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const finePointer = () => window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+const touchFirst = () => window.matchMedia('(pointer: coarse)').matches || window.innerWidth < 720;
 
 let mounted = false;
 let dogRoot: HTMLElement;
@@ -25,14 +31,18 @@ let status: HTMLElement;
 let dialog: HTMLDialogElement;
 let digDialog: HTMLDialogElement;
 let digBody: HTMLElement;
+let digKicker: HTMLElement;
 let slot: HTMLElement;
 let gust: HTMLElement;
 let opening: HTMLElement;
 let trails: HTMLElement;
+let mapDot: HTMLElement;
+let coach: HTMLElement;
 let layers: HTMLElement[] = [];
+let speeds: number[] = [];
 let targets: Target[] = [];
 let mounds: Target[] = [];
-let trigger: ScrollTrigger | null = null;
+let places: Place[] = [];
 let parked: { node: HTMLElement; parent: Node; next: ChildNode | null; hideAgain: boolean } | null = null;
 let sniffHeld = false;
 let sniffLocked = false;
@@ -41,9 +51,27 @@ let lastMove = performance.now();
 let pose: Pose = 'idle';
 let sleepBoof = false;
 let endingShown = false;
+let shownX = START_X;
+let frame = 0;
 const lit = new Set<string>();
 const audio = new VillageAudio();
 const dog = createDog();
+
+function el<K extends keyof HTMLElementTagNameMap>(tag: K, className?: string, text?: string): HTMLElementTagNameMap[K] {
+  const node = document.createElement(tag);
+  if (className) node.className = className;
+  if (text) node.textContent = text;
+  return node;
+}
+
+function iconButton(className: string, glyph: string, label: string, visibleLabel = true): HTMLButtonElement {
+  const button = el('button', className);
+  button.type = 'button';
+  button.innerHTML = `<span class="hud-icon" aria-hidden="true">${glyph}</span>`;
+  const text = el('span', visibleLabel ? 'hud-label' : 'visually-hidden', label);
+  button.append(text);
+  return button;
+}
 
 function skyPhase(now = new Date()): 'golden' | 'dusk' | 'night' {
   const hour = now.getHours() + now.getMinutes() / 60;
@@ -56,31 +84,32 @@ function sniffing(): boolean {
   return sniffHeld || sniffLocked;
 }
 
+function maxScroll(): number {
+  return Math.max(1, scroller.scrollHeight - scroller.clientHeight);
+}
+
 function layout(): void {
-  const travel = Math.max(900, WORLD_WIDTH - stage.clientWidth);
-  spacer.style.height = `${Math.max(scroller.clientHeight, 1) + travel}px`;
+  spacer.style.height = `${Math.max(scroller.clientHeight, 1) + (END_X - START_X)}px`;
 }
 
-function cameraX(): number {
-  const maxScroll = Math.max(1, scroller.scrollHeight - scroller.clientHeight);
-  const travel = Math.max(1, WORLD_WIDTH - stage.clientWidth);
-  return (scroller.scrollTop / maxScroll) * travel;
+/** Where the scroll position puts the pup in the world. */
+function goalX(): number {
+  return START_X + (scroller.scrollTop / maxScroll()) * (END_X - START_X);
 }
 
-function dogOffset(): number {
-  const stageRect = stage.getBoundingClientRect();
-  const dogRect = dog.root.getBoundingClientRect();
-  if (!stageRect.width || !dogRect.width) return stage.clientWidth * 0.28;
-  return dogRect.left - stageRect.left + dogRect.width / 2;
+/** The camera keeps the pup a little left of centre and stops at the world's edges. */
+function cameraFor(worldX: number): number {
+  const width = stage.clientWidth;
+  const anchor = width * (width < 720 ? 0.3 : 0.36);
+  return Math.min(Math.max(0, worldX - anchor), Math.max(0, WORLD_WIDTH - width));
 }
 
 function nearest(): Target | null {
-  const dogX = cameraX() + dogOffset();
   const within = (pool: Target[], radius: number): Target | null => {
     let best: Target | null = null;
     let bestDist = radius;
     for (const target of pool) {
-      const dist = Math.abs(target.x + target.width / 2 - dogX);
+      const dist = Math.abs(target.x + target.width / 2 - shownX);
       if (dist < bestDist) {
         best = target;
         bestDist = dist;
@@ -88,25 +117,50 @@ function nearest(): Target | null {
     }
     return best;
   };
-  return within(targets, 340) ?? within(mounds, 110);
+  // Standing right on a dig spot beats a building nearby, so E digs there.
+  return within(mounds, 56) ?? within(targets, 300) ?? within(mounds, 110);
 }
 
-function applyCamera(): void {
-  const camera = cameraX();
-  const speeds = reduced() ? [1, 1, 1, 1] : [0.22, 0.48, 1, 1.15];
+function render(): void {
+  const camera = cameraFor(shownX);
   layers.forEach((layer, index) => {
-    gsap.set(layer, { x: -camera * (speeds[index] ?? 1) });
+    layer.style.transform = `translate3d(${(-camera * (speeds[index] ?? 1)).toFixed(1)}px, 0, 0)`;
   });
-  const dogX = camera + dogOffset();
-  updateTrails(trails, mounds, dogX, sniffing());
+  dog.root.style.transform = `translate3d(${(shownX - camera).toFixed(1)}px, 0, 0)`;
+  mapDot.style.left = `${((shownX / WORLD_WIDTH) * 100).toFixed(2)}%`;
+  updateTrails(trails, mounds, shownX, sniffing());
   const near = nearest();
   if (near) {
     openNear.hidden = false;
-    openNear.textContent = near.label;
+    openNear.querySelector('.hud-label')!.textContent = near.label;
+    // The prompt floats over the pup's head like a thought bubble.
+    const half = openNear.offsetWidth / 2 + 12;
+    const x = Math.min(stage.clientWidth - half, Math.max(half, shownX - camera));
+    openNear.style.left = `${x.toFixed(1)}px`;
   } else {
     openNear.hidden = true;
   }
-  status.textContent = near ? near.label : 'Walking the village';
+  const text = near ? near.label : 'Walking the village';
+  if (status.textContent !== text) status.textContent = text;
+}
+
+function tick(): void {
+  frame = 0;
+  const goal = goalX();
+  const diff = goal - shownX;
+  if (reduced() || Math.abs(diff) < 0.6) {
+    shownX = goal;
+  } else {
+    shownX += diff * 0.2;
+    lastMove = performance.now();
+    if (pose !== 'walk') setPose('walk');
+  }
+  render();
+  if (shownX !== goal) frame = requestAnimationFrame(tick);
+}
+
+function schedule(): void {
+  if (!frame) frame = requestAnimationFrame(tick);
 }
 
 function setPose(next: Pose): void {
@@ -146,6 +200,7 @@ function openNode(node: HTMLElement): void {
   else dialog.setAttribute('aria-label', 'Portfolio section');
   if (!reduced()) void playGust();
   dialog.showModal();
+  slot.scrollTop = 0;
   const key = lanternFor(node);
   if (key) {
     lit.add(key);
@@ -158,13 +213,26 @@ function openNode(node: HTMLElement): void {
   }
 }
 
-function activate(target: Target): void {
-  if (target.kind === 'dig') {
-    digBody.textContent = target.element.innerText.trim();
-    if (!digDialog.open) digDialog.showModal();
-    return;
+/** Shows what was buried: one note, or (for the awards spot) the whole list. */
+function dig(spot: HTMLElement): void {
+  const notes = spot.dataset.bone
+    ? [spot.dataset.bone]
+    : [...spot.querySelectorAll<HTMLElement>('[data-bone]')].map((node) => node.dataset.bone ?? '');
+  const found = notes.map((note) => note.trim()).filter(Boolean);
+  digKicker.textContent = found.length > 1 ? `${found.length} buried notes` : 'A buried note';
+  if (found.length > 1) {
+    const list = el('ul', 'dig-list');
+    for (const note of found) list.append(el('li', undefined, note));
+    digBody.replaceChildren(list);
+  } else {
+    digBody.textContent = found[0] ?? spot.innerText.trim();
   }
-  openNode(target.element);
+  if (!digDialog.open) digDialog.showModal();
+}
+
+function activate(target: Target): void {
+  if (target.kind === 'dig') dig(target.element);
+  else openNode(target.element);
 }
 
 function playGust(): Promise<void> {
@@ -179,8 +247,8 @@ function playGust(): Promise<void> {
       {
         x: () => window.innerWidth + 140,
         opacity: 1,
-        rotation: 24,
-        duration: 0.7,
+        rotation: 200,
+        duration: 0.75,
         stagger: 0.02,
         ease: 'power1.in',
         onComplete: () => {
@@ -194,10 +262,12 @@ function playGust(): Promise<void> {
 
 function playOpening(): Promise<void> {
   opening.hidden = false;
-  const moon = opening.querySelector('.opening-moon');
+  const moonArt = opening.querySelector('.opening-moon');
   const clouds = opening.querySelectorAll('.opening-cloud');
-  const porch = opening.querySelector('.opening-porch');
+  const porchArt = opening.querySelector('.opening-porch');
+  const pup = opening.querySelector<HTMLElement>('.opening-pup');
   const skip = opening.querySelector<HTMLButtonElement>('.skip-open');
+  pup?.classList.replace('is-sit', 'is-sleep');
   skip?.focus();
   return new Promise((resolve) => {
     let settled = false;
@@ -207,6 +277,7 @@ function playOpening(): Promise<void> {
       settled = true;
       timeline?.kill();
       opening.hidden = true;
+      gsap.set(opening, { clearProps: 'opacity,visibility' });
       window.removeEventListener('keydown', onEscape, true);
       resolve();
     };
@@ -219,10 +290,14 @@ function playOpening(): Promise<void> {
     skip?.addEventListener('click', finish, { once: true });
     window.addEventListener('keydown', onEscape, true);
     timeline = gsap.timeline({ defaults: { ease: 'power1.inOut' } });
-    if (moon) timeline.fromTo(moon, { y: 20, scale: 1.35 }, { y: -36, scale: 0.7, duration: 2.6 }, 0);
-    timeline.fromTo(clouds, { y: 10 }, { y: -60, duration: 2.8 }, 0);
-    if (porch) timeline.fromTo(porch, { y: 24 }, { y: 0, duration: 1.4 }, 0.15);
-    timeline.to(opening, { autoAlpha: 0, duration: 0.45, onComplete: finish }, 3.1);
+    if (moonArt) timeline.fromTo(moonArt, { y: 30, scale: 1.3 }, { y: -30, scale: 0.8, duration: 2.8 }, 0);
+    timeline.fromTo(clouds, { x: -20 }, { x: 40, duration: 3 }, 0);
+    if (porchArt) timeline.fromTo(porchArt, { y: 30 }, { y: 0, duration: 1.4 }, 0.1);
+    if (pup) {
+      timeline.call(() => pup.classList.replace('is-sleep', 'is-sit'), [], 1.7);
+      timeline.fromTo(pup, { y: 0 }, { y: -14, duration: 0.18, yoyo: true, repeat: 1, ease: 'power2.out' }, 1.7);
+    }
+    timeline.to(opening, { autoAlpha: 0, duration: 0.45, onComplete: finish }, 3.4);
   });
 }
 
@@ -233,15 +308,15 @@ function onKey(event: KeyboardEvent): void {
   if (event.key === 's' || event.key === 'S') {
     sniffHeld = event.type === 'keydown';
     dogRoot.classList.toggle('is-sniffing', sniffing());
-    applyCamera();
+    render();
     return;
   }
-  if (event.type !== 'keydown' || opening.hidden === false) return;
-  const step = event.key === 'a' || event.key === 'A' || event.key === 'ArrowLeft' || event.key === 'ArrowUp' ? -140 : 0;
+  if (event.type !== 'keydown' || opening.hidden === false || dialog.open || digDialog.open) return;
+  const back = event.key === 'a' || event.key === 'A' || event.key === 'ArrowLeft' || event.key === 'ArrowUp' ? -140 : 0;
   const forward = event.key === 'd' || event.key === 'D' || event.key === 'ArrowRight' || event.key === 'ArrowDown' ? 140 : 0;
-  if (step || forward) {
+  if (back || forward) {
     event.preventDefault();
-    scroller.scrollTop += step + forward;
+    scroller.scrollTop += back + forward;
   }
   if ((event.key === 'e' || event.key === 'E' || (event.key === 'Enter' && event.target === scroller)) && !openNear.hidden) {
     event.preventDefault();
@@ -250,27 +325,10 @@ function onKey(event: KeyboardEvent): void {
   }
 }
 
-function bindScroll(): void {
-  trigger?.kill();
-  layout();
-  trigger = ScrollTrigger.create({
-    scroller,
-    trigger: spacer,
-    start: 'top top',
-    end: 'bottom bottom',
-    scrub: reduced() ? true : 0.3,
-    onUpdate: () => applyCamera(),
-  });
-  applyCamera();
-}
-
 function scrollToTarget(target: Target): void {
-  const maxScroll = Math.max(1, scroller.scrollHeight - scroller.clientHeight);
-  const travel = Math.max(1, WORLD_WIDTH - stage.clientWidth);
-  const center = target.x + target.width / 2;
-  const camera = Math.min(travel, Math.max(0, center - dogOffset()));
-  scroller.scrollTo({ top: (camera / travel) * maxScroll, behavior: 'auto' });
-  applyCamera();
+  const centre = Math.min(END_X, Math.max(START_X, target.x + target.width / 2));
+  scroller.scrollTop = ((centre - START_X) / (END_X - START_X)) * maxScroll();
+  schedule();
 }
 
 function readCostume(): Costume {
@@ -279,63 +337,76 @@ function readCostume(): Costume {
   return 'plain';
 }
 
-function mount(): void {
-  dogRoot = document.getElementById('dog-root') as HTMLElement;
-  human = document.getElementById('human');
-  dogRoot.dataset.sky = skyPhase();
-  dogRoot.replaceChildren();
+/**
+ * A button that walks the pup for as long as it is held. A keyboard
+ * press (or a click without a pointer) takes one step instead.
+ */
+function walkButton(direction: -1 | 1): HTMLButtonElement {
+  const label = direction < 0 ? 'Walk left' : 'Walk right';
+  const button = iconButton('hud-round walk-btn', icon(direction < 0 ? 'left' : 'right'), label, false);
+  button.title = label;
+  let frame = 0;
+  let fromPointer = false;
+  const step = () => {
+    scroller.scrollTop += direction * 9;
+    frame = requestAnimationFrame(step);
+  };
+  const stop = () => {
+    cancelAnimationFrame(frame);
+    frame = 0;
+    button.classList.remove('is-held');
+  };
+  button.addEventListener('pointerdown', (event) => {
+    fromPointer = true;
+    event.preventDefault();
+    button.setPointerCapture(event.pointerId);
+    button.classList.add('is-held');
+    if (!frame) step();
+  });
+  button.addEventListener('pointerup', stop);
+  button.addEventListener('pointercancel', stop);
+  button.addEventListener('lostpointercapture', stop);
+  button.addEventListener('contextmenu', (event) => event.preventDefault());
+  button.addEventListener('click', () => {
+    if (fromPointer) {
+      fromPointer = false;
+      return;
+    }
+    scroller.scrollTop += direction * 140;
+  });
+  return button;
+}
 
-  scroller = document.createElement('div');
-  scroller.id = 'dog-scroll';
-  scroller.className = 'dog-scroll';
-  scroller.tabIndex = 0;
-  scroller.setAttribute('aria-label', 'Village path. Scroll or press A and D to walk.');
-  spacer = document.createElement('div');
-  spacer.className = 'dog-spacer';
-  scroller.append(spacer);
+function buildHud(): HTMLElement {
+  const hud = el('div', 'dog-hud');
+  const top = el('div', 'hud-top');
 
-  stage = document.createElement('div');
-  stage.className = 'dog-stage';
-  const world = buildWorld(stage);
-  layers = world.layers;
-  targets = world.targets;
-  mounds = world.mounds;
-  trails = world.trails;
-  stage.append(dog.root);
-
-  const hud = document.createElement('div');
-  hud.className = 'dog-hud';
-  const top = document.createElement('div');
-  top.className = 'hud-top';
-  const back = document.createElement('button');
-  back.type = 'button';
-  back.className = 'hud-btn primary';
-  back.textContent = 'Back to human';
+  const back = iconButton('hud-btn primary back-btn', icon('home'), 'Back to human');
   back.addEventListener('click', () => exitDog());
 
-  const lanterns = document.createElement('ul');
-  lanterns.className = 'lanterns';
+  const lanterns = el('ul', 'lanterns');
   lanterns.setAttribute('aria-label', 'Memory lanterns');
   for (const [id, label] of [
     ['about', 'About'],
     ['skills', 'Skills'],
     ['projects', 'Projects'],
   ] as const) {
-    const item = document.createElement('li');
+    const item = el('li');
     item.dataset.lantern = id;
-    item.textContent = label;
+    item.innerHTML = `<span class="lantern-art" aria-hidden="true">${lanternSticker()}</span>`;
+    item.append(el('span', 'lantern-label', label));
     lanterns.append(item);
   }
 
-  const costumes = document.createElement('div');
-  costumes.className = 'costumes';
+  const costumes = el('div', 'costumes');
+  costumes.setAttribute('role', 'group');
+  costumes.setAttribute('aria-label', 'Costumes');
   const saved = readCostume();
   dog.setCostume(saved);
+  const costumeNames: Record<Costume, string> = { plain: 'No costume', pumpkin: 'Pumpkin', ghost: 'Ghost', witch: 'Witch hat' };
   for (const costume of ['plain', 'pumpkin', 'ghost', 'witch'] as const) {
-    const button = document.createElement('button');
-    button.type = 'button';
-    button.className = 'hud-btn';
-    button.textContent = costume === 'plain' ? 'No costume' : costume === 'witch' ? 'Witch hat' : costume[0].toUpperCase() + costume.slice(1);
+    const button = iconButton('hud-round costume-btn', pupHead('pup-head-art', costume === 'plain' ? undefined : costume), costumeNames[costume], false);
+    button.title = costumeNames[costume];
     button.setAttribute('aria-pressed', String(costume === saved));
     button.addEventListener('click', () => {
       dog.setCostume(costume);
@@ -346,12 +417,10 @@ function mount(): void {
     costumes.append(button);
   }
 
-  const sound = document.createElement('button');
-  sound.type = 'button';
-  sound.className = 'hud-btn';
-  const soundOn = sessionStorage.getItem(SOUND_KEY) === 'on';
+  const sound = iconButton('hud-round sound-btn', '', 'Sound', false);
+  sound.title = 'Sound';
   const paintSound = () => {
-    sound.textContent = audio.enabled ? 'Sound: on' : 'Sound: off';
+    sound.querySelector('.hud-icon')!.innerHTML = icon(audio.enabled ? 'soundOn' : 'soundOff');
     sound.setAttribute('aria-pressed', String(audio.enabled));
   };
   sound.addEventListener('click', () => {
@@ -359,117 +428,140 @@ function mount(): void {
     sessionStorage.setItem(SOUND_KEY, audio.enabled ? 'on' : 'off');
     paintSound();
   });
-  if (soundOn) audio.setEnabled(true);
+  if (sessionStorage.getItem(SOUND_KEY) === 'on') audio.setEnabled(true);
   paintSound();
 
-  top.append(back, lanterns, costumes, sound);
+  const askPup = iconButton('hud-round ask-btn', icon('chat'), 'Ask the pup', false);
+  askPup.title = 'Ask the pup';
+  askPup.addEventListener('click', () => document.dispatchEvent(new Event('ask-pup')));
 
-  const bottom = document.createElement('div');
-  bottom.className = 'hud-bottom';
-  const hint = document.createElement('p');
-  hint.className = 'walk-hint';
-  hint.textContent = 'Scroll to walk';
-  const keys = document.createElement('p');
-  keys.className = 'key-hint';
-  keys.textContent = 'Arrows or A and D walk · S sniff · E opens';
-  const map = document.createElement('div');
-  map.className = 'minimap';
-  map.setAttribute('role', 'navigation');
+  const tools = el('div', 'hud-tools');
+  tools.append(costumes, askPup, sound);
+  top.append(back, lanterns, tools);
+
+  const bottom = el('div', 'hud-bottom');
+  const hints = el('div', 'hints');
+  hints.append(el('p', 'walk-hint', 'Scroll to walk'), el('p', 'key-hint', 'Arrows or A and D walk · S sniff · E opens'));
+
+  const map = el('nav', 'minimap');
   map.setAttribute('aria-label', 'Village map');
-  const mapNames = [
-    ['about', 'Cottage'],
-    ['skills', 'Workshop'],
-    ['projects', 'Market'],
-    ['contact', 'Mailbox'],
-    ['graveyard', 'Graveyard'],
-  ];
-  for (const [id, label] of mapNames) {
-    const button = document.createElement('button');
-    button.type = 'button';
-    button.textContent = label;
+  const track = el('div', 'map-track');
+  track.setAttribute('aria-hidden', 'true');
+  for (const target of targets) {
+    if (!places.some((place) => place.id === target.id)) continue;
+    const pin = el('span', 'map-pin');
+    pin.style.left = `${(((target.x + target.width / 2) / WORLD_WIDTH) * 100).toFixed(2)}%`;
+    track.append(pin);
+  }
+  mapDot = el('span', 'map-dot');
+  mapDot.innerHTML = icon('paw');
+  track.append(mapDot);
+  const stops = el('div', 'map-stops');
+  for (const place of places) {
+    const button = iconButton('map-stop', icon(place.icon), place.label);
     button.addEventListener('click', () => {
-      const target = targets.find((item) => item.id === id);
+      const target = targets.find((item) => item.id === place.id);
       if (target) scrollToTarget(target);
     });
-    map.append(button);
+    stops.append(button);
   }
-  const sniffBtn = document.createElement('button');
-  sniffBtn.type = 'button';
-  sniffBtn.className = 'hud-btn';
-  sniffBtn.textContent = 'Sniff';
+  map.append(track, stops);
+  const mapRow = el('div', 'map-row');
+  mapRow.append(walkButton(-1), map, walkButton(1));
+
+  const sniffBtn = iconButton('hud-btn sniff-btn', icon('nose'), 'Sniff');
   sniffBtn.setAttribute('aria-pressed', 'false');
   sniffBtn.addEventListener('click', () => {
     sniffLocked = !sniffLocked;
     sniffBtn.setAttribute('aria-pressed', String(sniffLocked));
     dogRoot.classList.toggle('is-sniffing', sniffing());
-    applyCamera();
+    render();
   });
-  openNear = document.createElement('button');
+
+  openNear = iconButton('hud-btn primary open-near', icon('spark'), 'Open');
   openNear.id = 'open-near';
-  openNear.type = 'button';
-  openNear.className = 'hud-btn primary';
   openNear.hidden = true;
   openNear.addEventListener('click', () => {
     const near = nearest();
     if (near) activate(near);
   });
-  status = document.createElement('p');
-  status.className = 'visually-hidden';
-  status.setAttribute('aria-live', 'polite');
-  bottom.append(hint, keys, map, sniffBtn, openNear, status);
-  hud.append(top, bottom);
 
-  dialog = document.createElement('dialog');
-  dialog.className = 'section-dialog';
-  const card = document.createElement('div');
-  card.className = 'dialog-card';
-  const close = document.createElement('button');
-  close.type = 'button';
-  close.className = 'hud-btn dialog-close';
-  close.textContent = 'Close';
+  status = el('p', 'visually-hidden');
+  status.setAttribute('aria-live', 'polite');
+  coach = el('p', 'coach', 'Swipe sideways, or hold the arrows, to walk');
+  bottom.append(hints, mapRow, sniffBtn);
+  hud.append(top, coach, openNear, bottom, status);
+  return hud;
+}
+
+function buildDialogs(): void {
+  dialog = el('dialog', 'section-dialog');
+  const card = el('div', 'dialog-card');
+  const close = iconButton('hud-btn dialog-close', icon('close'), 'Close');
   close.addEventListener('click', () => dialog.close());
-  slot = document.createElement('div');
+  slot = el('div', 'dialog-slot');
   card.append(close, slot);
   dialog.append(card);
   dialog.addEventListener('close', () => restore());
 
-  digDialog = document.createElement('dialog');
-  digDialog.className = 'dig-dialog';
-  const digCard = document.createElement('div');
-  digCard.className = 'dialog-card';
-  const digClose = document.createElement('button');
-  digClose.type = 'button';
-  digClose.className = 'hud-btn dialog-close';
-  digClose.textContent = 'Close';
+  digDialog = el('dialog', 'dig-dialog');
+  const digCard = el('div', 'dialog-card dig-card');
+  const digClose = iconButton('hud-btn dialog-close', icon('close'), 'Close');
   digClose.addEventListener('click', () => digDialog.close());
-  const digKicker = document.createElement('p');
-  digKicker.className = 'kicker';
-  digKicker.textContent = 'A buried note';
-  digBody = document.createElement('p');
-  digCard.append(digClose, digKicker, digBody);
+  const digArt = el('div', 'dig-art is-sit');
+  digArt.innerHTML = pupArt();
+  digArt.setAttribute('aria-hidden', 'true');
+  digBody = el('div', 'dig-body');
+  digKicker = el('p', 'kicker', 'A buried note');
+  digCard.append(digClose, digArt, digKicker, digBody);
   digDialog.append(digCard);
+}
 
-  gust = document.createElement('div');
-  gust.className = 'gust';
+function mount(): void {
+  dogRoot = document.getElementById('dog-root') as HTMLElement;
+  human = document.getElementById('human');
+  dogRoot.dataset.sky = skyPhase();
+  dogRoot.replaceChildren();
+
+  scroller = el('div', 'dog-scroll');
+  scroller.id = 'dog-scroll';
+  scroller.tabIndex = 0;
+  scroller.setAttribute('role', 'region');
+  scroller.setAttribute('aria-label', 'Village path. Scroll or press A and D to walk.');
+  spacer = el('div', 'dog-spacer');
+  scroller.append(spacer);
+
+  stage = el('div', 'dog-stage');
+  const world = buildWorld(stage);
+  layers = world.layers;
+  speeds = layers.map((layer) => Number(layer.dataset.speed ?? 1));
+  targets = world.targets;
+  mounds = world.mounds;
+  trails = world.trails;
+  places = world.places;
+  stage.append(el('div', 'sky-tint'), dog.root);
+
+  const hud = buildHud();
+  buildDialogs();
+
+  gust = el('div', 'gust');
   gust.hidden = true;
   gust.setAttribute('aria-hidden', 'true');
-  for (let i = 0; i < 14; i += 1) {
-    const leaf = document.createElement('span');
-    leaf.className = 'gust-leaf';
+  for (let i = 0; i < 16; i += 1) {
+    const leaf = el('span', `gust-leaf tone-${i % 4}`);
     leaf.style.top = `${8 + ((i * 17) % 80)}%`;
     gust.append(leaf);
   }
 
-  opening = document.createElement('div');
-  opening.className = 'opening';
+  opening = el('div', 'opening');
   opening.hidden = true;
   opening.innerHTML = `
-    <button type="button" class="hud-btn skip-open">Skip</button>
-    <div class="opening-moon"></div>
-    <div class="opening-cloud" style="width:180px;top:22%;left:10%"></div>
-    <div class="opening-cloud" style="width:240px;top:34%;left:40%"></div>
-    <div class="opening-cloud" style="width:160px;top:18%;left:68%"></div>
-    <div class="opening-porch">${cottagePorch()}</div>
+    <button type="button" class="hud-btn skip-open"><span class="hud-label">Skip</span></button>
+    <div class="opening-stars" aria-hidden="true"></div>
+    <div class="opening-moon" aria-hidden="true">${moon()}</div>
+    <div class="opening-cloud" aria-hidden="true" style="width:200px;top:24%;left:6%">${cloud()}</div>
+    <div class="opening-cloud" aria-hidden="true" style="width:150px;top:36%;left:64%">${cloud({ tint: '#ffdeeb' })}</div>
+    <div class="opening-porch" aria-hidden="true">${porch()}<div class="opening-pup is-sleep">${pupArt()}</div></div>
     <p class="opening-caption">A little spirit pup wakes in a basket on the porch.</p>
   `;
 
@@ -481,11 +573,15 @@ function mount(): void {
     const target = targets.find((item) => item.id === hit.dataset.open || item.element.id === hit.dataset.open);
     if (target) openNode(target.element);
   });
+  // The chat pup can send the walking pup to a building.
+  document.addEventListener('pup-goto', (event) => {
+    const id = (event as CustomEvent<string>).detail;
+    const target = targets.find((item) => item.id === id);
+    if (target) scrollToTarget(target);
+  });
   stage.addEventListener('dig', (event) => {
     const bone = (event as CustomEvent<HTMLElement>).detail;
-    if (!bone) return;
-    digBody.textContent = bone.innerText.trim();
-    if (!digDialog.open) digDialog.showModal();
+    if (bone) dig(bone);
   });
 
   scroller.addEventListener(
@@ -499,10 +595,27 @@ function mount(): void {
         audio.footstep();
       }
       lastScroll = top;
-      applyCamera();
+      schedule();
     },
     { passive: true },
   );
+  // Sideways swipes walk too. The scroller only scrolls up and down by itself.
+  let swipeX: number | null = null;
+  scroller.addEventListener('pointerdown', (event) => {
+    if (event.pointerType === 'touch') swipeX = event.clientX;
+  });
+  scroller.addEventListener('pointermove', (event) => {
+    if (swipeX === null || event.pointerType !== 'touch') return;
+    const dx = event.clientX - swipeX;
+    swipeX = event.clientX;
+    scroller.scrollTop -= dx * 1.6;
+  });
+  const endSwipe = () => {
+    swipeX = null;
+  };
+  scroller.addEventListener('pointerup', endSwipe);
+  scroller.addEventListener('pointercancel', endSwipe);
+
   scroller.addEventListener('click', (event) => {
     scroller.style.pointerEvents = 'none';
     const under = document.elementFromPoint(event.clientX, event.clientY);
@@ -523,30 +636,18 @@ function mount(): void {
   window.addEventListener('keyup', onKey);
   window.addEventListener('resize', () => {
     if (dogRoot.hidden) return;
-    bindScroll();
+    layout();
+    render();
   });
   dogRoot.addEventListener('pointerdown', (event) => {
     if (reduced() || !finePointer() || !document.body.classList.contains('is-dog')) return;
-    const print = document.createElement('span');
-    print.className = 'paw-print';
+    const print = el('span', 'paw-print');
     print.style.left = `${event.clientX}px`;
     print.style.top = `${event.clientY}px`;
     document.body.append(print);
     print.addEventListener('animationend', () => print.remove());
   });
   mounted = true;
-}
-
-function cottagePorch(): string {
-  return `<svg viewBox="0 0 420 220" aria-hidden="true">
-    <ellipse cx="210" cy="180" rx="180" ry="28" fill="#3d5a45"/>
-    <path d="M70 120 L150 58 L230 120 Z" fill="#e8843a" stroke="#3c2a4a" stroke-width="4"/>
-    <rect x="90" y="118" width="120" height="70" rx="8" fill="#f6e7d4" stroke="#3c2a4a" stroke-width="4"/>
-    <rect x="250" y="150" width="70" height="36" rx="12" fill="#c46b8a" stroke="#3c2a4a" stroke-width="4"/>
-    <ellipse cx="286" cy="146" rx="22" ry="16" fill="#f6e7d4" stroke="#3c2a4a" stroke-width="3"/>
-    <circle cx="292" cy="144" r="3" fill="#2a1c38"/>
-    <ellipse cx="304" cy="150" rx="5" ry="3" fill="#e8843a"/>
-  </svg>`;
 }
 
 export async function enterDog(): Promise<void> {
@@ -556,7 +657,10 @@ export async function enterDog(): Promise<void> {
   document.body.classList.add('is-dog');
   document.body.classList.toggle('paw-cursor', finePointer() && !reduced());
   dogRoot.dataset.sky = skyPhase();
-  bindScroll();
+  layout();
+  shownX = goalX();
+  lastScroll = scroller.scrollTop;
+  render();
   const seen = sessionStorage.getItem(OPENING_KEY) === '1';
   if (reduced()) sessionStorage.setItem(OPENING_KEY, '1');
   else if (!seen) {
@@ -566,7 +670,11 @@ export async function enterDog(): Promise<void> {
     await playGust();
   }
   if (audio.enabled) audio.startMusic();
-  document.querySelector<HTMLButtonElement>('.hud-btn.primary')?.focus();
+  if (touchFirst()) {
+    coach.classList.add('is-shown');
+    window.setTimeout(() => coach.classList.remove('is-shown'), 6000);
+  }
+  document.querySelector<HTMLButtonElement>('.dog-hud .back-btn')?.focus();
 }
 
 export function exitDog(): void {
