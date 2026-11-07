@@ -266,6 +266,7 @@ export const portfolio = {
     'Code2Create 2026 — 1st Place — MSRIT ACM — May 2026',
     'Athernex Hackathon — 2nd Place — BMSCE Bangalore — April 2026',
     'Hack-A-War Hackathon — 1st Place — MSRIT Bangalore — April 2026',
+    'SustainAI Buildathon — 1st Place — MSRIT Bangalore — April 2026',
     'Mindscape Hackathon — 2nd Place — BNMIT Bangalore — July 2025',
     "Code-A-Thon Hackathon — 3rd Place — MIT Bangalore — April 2025",
     "Code Red '25 — Consolation Prize — BMSIT — January 2025",

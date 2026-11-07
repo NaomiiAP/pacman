@@ -64,11 +64,11 @@ Built for the **AWS Student Builder Challenge**. Underneath, it's a normal, read
     <td align="center"><sub>Sniff (S) for scent trails, then dig where the bone is.</sub></td>
   </tr>
   <tr>
-    <td width="50%"><img src="docs/screenshots/dog-buried-notes.jpg" alt="A dug-up note: Naomi's hackathon record, 9 results, 4 of them first place"></td>
+    <td width="50%"><img src="docs/screenshots/dog-buried-notes.jpg" alt="A dug-up note: Naomi's hackathon record, 10 results, 5 of them first place"></td>
     <td width="50%"><img src="docs/screenshots/dog-lanterns.jpg" alt="The ending dialog titled The lanterns are lit"></td>
   </tr>
   <tr>
-    <td align="center"><sub>Four dig spots: school report, current internship, hackathon record, focus areas.</sub></td>
+    <td align="center"><sub>Three dig spots: school report, current internship, hackathon record.</sub></td>
     <td align="center"><sub>Light the cottage, workshop and market lanterns for the ending.</sub></td>
   </tr>
 </table>
@@ -275,7 +275,7 @@ The live site is an Amplify Hosting app that is not connected to Git. Each relea
 
 - Scroll, A and D, or the arrow keys to walk. On a phone, swipe sideways or hold the ◀ ▶ buttons next to the map.
 - Walk up to a building and press the bubble over the pup, or E, to open it. The mini-map jumps to any building.
-- S, or the Sniff button, shows scent trails. Stand on one of the four dig spots and press E to dig up its note.
+- S, or the Sniff button, shows scent trails. Stand on one of the three dig spots and press E to dig up its note.
 - Costumes: pumpkin, bedsheet ghost, witch hat.
 - Stop walking and the pup sits, then curls up and falls asleep.
 - Asking the pup to "take me to the projects" walks it to the market.

@@ -1993,7 +1993,8 @@ a {
 .award {
   --medal: var(--butter);
   --award-soft: var(--butter-soft);
-  flex: 1 1 250px;
+  /* Fixed width (no growing), so a short last row lines up with the columns above. */
+  flex: 0 1 256px;
   max-width: 272px;
   position: relative;
   display: grid;

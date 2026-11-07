@@ -9,8 +9,6 @@ export type BuriedNote = {
   lines: string[];
 };
 
-const capitalise = (text: string) => text.charAt(0).toUpperCase() + text.slice(1);
-
 /**
  * The notes the pup can dig up. Each one gathers a few related facts so a dig
  * is worth the walk, rather than turning up a single word.
@@ -44,15 +42,6 @@ export function buriedNotes(data: Portfolio): BuriedNote[] {
       title: `${first}'s hackathon record`,
       intro: `${awards.length} results, ${firsts} of them first place.`,
       lines: awards.map((award) => [award.event, award.place, award.date].filter(Boolean).join(' · ')),
-    });
-  }
-
-  const focus = data.skills.find((group) => /focus/i.test(group.title));
-  if (focus) {
-    notes.push({
-      id: 'note-focus',
-      title: `What ${first} builds`,
-      lines: focus.skills.map(capitalise),
     });
   }
 

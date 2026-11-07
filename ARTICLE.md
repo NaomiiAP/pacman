@@ -29,7 +29,7 @@ Ask in plain words: *What does Naomi build? Which projects use React? What hacka
 
 Behind the face is a retrieval agent that runs entirely in the browser, with no LLM API. When the chat opens, my portfolio content is split into small passages (one per project, internship, award and skill group), and each question is ranked against them with **BM25**, with light stemming and synonyms ("won" also finds awards). Every answer shows a **Found in** chip that jumps to its source. If nothing matches well enough, the pup says so: *"My nose couldn't find that on Naomi's page, and I don't make things up."* Some questions are actions: "Show me the blockchain projects" filters the project grid, "Turn the lights off" switches to dark mode, and "Let me be the dog" starts the village.
 
-![The chat answering "What hackathons has Naomi won?" with four first-place finishes and a Found in: Achievements chip](https://raw.githubusercontent.com/paccmann218/portfolio/master/docs/screenshots/ask-the-pup.jpg)
+![The chat answering "What hackathons has Naomi won?" with five first-place finishes and a Found in: Achievements chip](https://raw.githubusercontent.com/paccmann218/portfolio/master/docs/screenshots/ask-the-pup.jpg)
 
 *Asking about my hackathon wins. The answer cites the Achievements section it came from.*
 
@@ -56,7 +56,7 @@ This is the part I spent the most time on. **Become the dog** turns the page int
 | The mailbox | Contact |
 | The graveyard | Projects I set down |
 
-The sky follows your local time, so you might arrive at golden hour or under a full moon. Press **S** to sniff and see glowing scent trails, dig up four buried notes (my school report, my current internship, my hackathon record and what I build), and try on a pumpkin, ghost or witch-hat costume. Stand still and the pup sits, then falls asleep. Opening the cottage, the workshop and the market lights three memory lanterns, and a short ending plays.
+The sky follows your local time, so you might arrive at golden hour or under a full moon. Press **S** to sniff and see glowing scent trails, dig up three buried notes (my school report, my current internship and my hackathon record), and try on a pumpkin, ghost or witch-hat costume. Stand still and the pup sits, then falls asleep. Opening the cottage, the workshop and the market lights three memory lanterns, and a short ending plays.
 
 ![Dog mode: the pup walking past the cottage, the school, the quest board and the spell workshop, with the mini-map at the bottom](https://raw.githubusercontent.com/paccmann218/portfolio/master/docs/screenshots/dog-village.jpg)
 
@@ -213,7 +213,7 @@ The agent, Fetch and the village all run in the browser, so a judge asking the p
 
 ## Things that didn't work the first time
 
-**The dig spots looked wrong.** My first version was a row of about twelve brown domes with dark speckles, right on the path, and they looked like exactly what a real dog leaves behind. I redrew them as flat patches of turned soil with a bone and a sparkle, moved them onto the grass, and cut them down to four spots that each hold a proper note instead of a single fact. The lesson: check your art at the size and in the place people will actually see it.
+**The dig spots looked wrong.** My first version was a row of about twelve brown domes with dark speckles, right on the path, and they looked like exactly what a real dog leaves behind. I redrew them as flat patches of turned soil with a bone and a sparkle, moved them onto the grass, and cut them down to three spots that each hold a proper note instead of a single fact. The lesson: check your art at the size and in the place people will actually see it.
 
 **The purple colour scheme looked generic.** The first version was lavender and purple everywhere, like a generated landing page. I re-coloured the whole site (CSS, every SVG illustration, the favicon) into midnight brown-black, pumpkin orange, bone white and witch-hat green.
 
