@@ -6,6 +6,7 @@ import { pupArt, pupHead } from '../art/pup.ts';
 import { porch } from '../art/village.ts';
 import { VillageAudio } from './audio.ts';
 import { createDog, type Costume, type Pose } from './dog.ts';
+import type { BuriedNote } from './notes.ts';
 import { WORLD_WIDTH, buildWorld, updateTrails, type Place, type Target } from './scene.ts';
 
 const OPENING_KEY = 'naomi-spirit-opening-seen';
@@ -215,26 +216,22 @@ function openNode(node: HTMLElement): void {
   }
 }
 
-/** Shows what was buried: one note, or (for the awards spot) the whole list. */
-function dig(spot: HTMLElement): void {
-  const notes = spot.dataset.bone
-    ? [spot.dataset.bone]
-    : [...spot.querySelectorAll<HTMLElement>('[data-bone]')].map((node) => node.dataset.bone ?? '');
-  const found = notes.map((note) => note.trim()).filter(Boolean);
-  digKicker.textContent = found.length > 1 ? `${found.length} buried notes` : 'A buried note';
-  if (found.length > 1) {
-    const list = el('ul', 'dig-list');
-    for (const note of found) list.append(el('li', undefined, note));
-    digBody.replaceChildren(list);
-  } else {
-    digBody.textContent = found[0] ?? spot.innerText.trim();
-  }
+/** Shows the note the pup dug up: a heading, an optional intro line, and its list. */
+function dig(note: BuriedNote): void {
+  digKicker.textContent = 'A buried note';
+  const parts: HTMLElement[] = [el('h3', 'dig-title', note.title)];
+  if (note.intro) parts.push(el('p', 'dig-intro', note.intro));
+  const list = el('ul', 'dig-list');
+  for (const line of note.lines) list.append(el('li', undefined, line));
+  parts.push(list);
+  digBody.replaceChildren(...parts);
   if (!digDialog.open) digDialog.showModal();
 }
 
 function activate(target: Target): void {
-  if (target.kind === 'dig') dig(target.element);
-  else openNode(target.element);
+  if (target.kind === 'dig') {
+    if (target.note) dig(target.note);
+  } else openNode(target.element);
 }
 
 function playGust(): Promise<void> {
@@ -585,8 +582,8 @@ function mount(): void {
     if (target) scrollToTarget(target);
   });
   stage.addEventListener('dig', (event) => {
-    const bone = (event as CustomEvent<HTMLElement>).detail;
-    if (bone) dig(bone);
+    const note = (event as CustomEvent<BuriedNote>).detail;
+    if (note) dig(note);
   });
 
   scroller.addEventListener(

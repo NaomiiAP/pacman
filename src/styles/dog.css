@@ -1009,10 +1009,27 @@ body.is-dog .toasts {
 }
 
 .dig-body {
+  display: grid;
+  gap: 0.5rem;
+  width: 100%;
   font-family: var(--font-display);
   font-weight: 600;
   font-size: 1.25rem;
   line-height: 1.4;
+}
+
+.dig-title {
+  margin: 0;
+  font-size: 1.45rem;
+  font-weight: 700;
+}
+
+.dig-intro {
+  margin: 0 0 0.2rem;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 700;
+  color: #6b5848;
 }
 
 .dig-list {

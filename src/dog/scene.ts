@@ -1,6 +1,8 @@
 import { cloud, moon, pumpkin, wrappedCandy, candyCorn } from '../art/critters.ts';
 import { academy } from '../art/decor.ts';
 import { sparkle } from '../art/kit.ts';
+import { portfolio } from '../content/portfolio.ts';
+import { buriedNotes, type BuriedNote } from './notes.ts';
 import {
   bush,
   cottage,
@@ -30,6 +32,8 @@ export type Target = {
   x: number;
   width: number;
   element: HTMLElement;
+  /** Dig spots only: what the pup digs up. */
+  note?: BuriedNote;
 };
 
 /** A stop on the village map. */
@@ -192,14 +196,8 @@ export function buildWorld(stage: HTMLElement): {
   const trails = el('div', 'trails');
   trails.hidden = true;
   village.append(trails);
-  // One dig spot per buried fact, except the hackathon awards: they share a
-  // single spot that digs up the whole list at once.
-  const awardList = document.querySelector<HTMLElement>('.award-grid');
-  const spots: HTMLElement[] = [];
-  for (const bone of document.querySelectorAll<HTMLElement>('[data-bone]')) {
-    const spot = awardList?.contains(bone) ? awardList : bone;
-    if (!spots.includes(spot)) spots.push(spot);
-  }
+  // A few dig spots, each holding a proper note (see notes.ts).
+  const spots = buriedNotes(portfolio);
   const SPOT_W = 96;
   // Spots sit in the grass strip, so keep them out from under building labels.
   const clearOfLabels = (start: number): number => {
@@ -211,7 +209,7 @@ export function buildWorld(stage: HTMLElement): {
     }
     return Math.min(x, WORLD_WIDTH - SPOT_W - 20);
   };
-  spots.forEach((spot, index) => {
+  spots.forEach((note, index) => {
     const x = clearOfLabels(Math.round(640 + index * ((4700 - 640) / Math.max(1, spots.length - 1))));
     const button = el('button', 'mound');
     button.type = 'button';
@@ -220,9 +218,9 @@ export function buildWorld(stage: HTMLElement): {
     button.innerHTML = `<span class="place-art" aria-hidden="true">${mound()}</span><span class="mound-label">Dig</span>`;
     button.setAttribute('aria-label', 'Dig this spot');
     village.append(button);
-    mounds.push({ kind: 'dig', id: spot.id || 'dig-awards', label: 'Dig here', x, width: SPOT_W, element: spot });
+    mounds.push({ kind: 'dig', id: note.id, label: 'Dig here', x, width: SPOT_W, element: button, note });
     button.addEventListener('click', () => {
-      button.dispatchEvent(new CustomEvent('dig', { bubbles: true, detail: spot }));
+      button.dispatchEvent(new CustomEvent('dig', { bubbles: true, detail: note }));
     });
   });
 

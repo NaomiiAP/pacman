@@ -44,7 +44,7 @@ import { ROLES, type RoleId } from '../agent/match.ts';
  * hydrated: src/main.ts adds the interactions. Dog mode moves these
  * sections into a dialog in the real DOM, so keep the ids and classes
  * that src/dog reads (#education, #experience, #skills, #projects, #achievements, #contact,
- * #graveyard, .project-card[data-short], .grave-card, [data-bone]).
+ * #graveyard, .project-card[data-short], .grave-card).
  */
 
 const TINTS = ['pink', 'peach', 'lilac', 'sky', 'mint', 'butter'] as const;
@@ -349,7 +349,7 @@ export function HumanPage(): ReactNode {
               <p className="about-bio">
                 {beforeLove}
                 {love ? (
-                  <span id="fact-bio" data-bone={bioLove}>
+                  <span id="fact-bio">
                     {bioLove}
                   </span>
                 ) : null}
@@ -360,14 +360,14 @@ export function HumanPage(): ReactNode {
               </button>
             </article>
             <ul className="facts" aria-label="Quick facts">
-              <li className="fact tint-pink" id="fact-bengaluru" data-bone={location}>
+              <li className="fact tint-pink" id="fact-bengaluru">
                 <Icon name="pin" />
                 <span>
                   <span className="fact-label">Based in</span>
                   <span className="fact-value">{location}</span>
                 </span>
               </li>
-              <li className="fact tint-lilac" id="fact-focus" data-bone={`Focus: ${focus}`}>
+              <li className="fact tint-lilac" id="fact-focus">
                 <Icon name="spark" />
                 <span>
                   <span className="fact-label">Focus</span>
@@ -438,7 +438,7 @@ export function HumanPage(): ReactNode {
                   <Icon name="spark" />
                   {education.dates}
                 </li>
-                <li id="fact-cgpa" className="edu-cgpa" data-bone={education.score}>
+                <li id="fact-cgpa" className="edu-cgpa">
                   {education.score}
                 </li>
               </ul>
@@ -588,7 +588,7 @@ export function HumanPage(): ReactNode {
           />
           <ol className="award-grid">
             {awards.map((award, index) => (
-              <li id={`ach-${index}`} className={`award rank-${award.rank}`} data-bone={award.text} key={award.text}>
+              <li id={`ach-${index}`} className={`award rank-${award.rank}`} key={award.text}>
                 <Medal rank={award.rank} />
                 <p className="award-place">{award.place}</p>
                 <h3 className="award-event">{award.event}</h3>

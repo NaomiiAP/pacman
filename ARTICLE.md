@@ -1,4 +1,4 @@
-# A Lost Spirit Pup, a Haunted Village, and My Portfolio on AWS
+# My Portfolio Has a Dog, and the Dog Knows My Résumé
 
 **In one sentence:** the creative feature is a spirit pup you can *ask* about my work, send to *fetch* a résumé for your job post, or *become* and walk through my portfolio as a village. The AWS piece is the guestbook, where anonymous visitors write to DynamoDB through Cognito guest credentials and AppSync, on AWS Amplify.
 
@@ -56,7 +56,7 @@ This is the part I spent the most time on. **Become the dog** turns the page int
 | The mailbox | Contact |
 | The graveyard | Projects I set down |
 
-The sky follows your local time, so you might arrive at golden hour or under a full moon. Press **S** to sniff and see glowing scent trails, dig up buried notes with facts about me (one spot holds every hackathon win), and try on a pumpkin, ghost or witch-hat costume. Stand still and the pup sits, then falls asleep. Opening the cottage, the workshop and the market lights three memory lanterns, and a short ending plays.
+The sky follows your local time, so you might arrive at golden hour or under a full moon. Press **S** to sniff and see glowing scent trails, dig up four buried notes (my school report, my current internship, my hackathon record and what I build), and try on a pumpkin, ghost or witch-hat costume. Stand still and the pup sits, then falls asleep. Opening the cottage, the workshop and the market lights three memory lanterns, and a short ending plays.
 
 ![Dog mode: the pup walking past the cottage, the school, the quest board and the spell workshop, with the mini-map at the bottom](https://raw.githubusercontent.com/paccmann218/portfolio/master/docs/screenshots/dog-village.jpg)
 
@@ -213,7 +213,7 @@ The agent, Fetch and the village all run in the browser, so a judge asking the p
 
 ## Things that didn't work the first time
 
-**The dig spots looked wrong.** My first version was a row of about twelve brown domes with dark speckles, right on the path, and they looked like exactly what a real dog leaves behind. I redrew them as flat patches of turned soil with a bone and a sparkle, moved them onto the grass, and merged all the hackathon wins into one spot. The lesson: check your art at the size and in the place people will actually see it.
+**The dig spots looked wrong.** My first version was a row of about twelve brown domes with dark speckles, right on the path, and they looked like exactly what a real dog leaves behind. I redrew them as flat patches of turned soil with a bone and a sparkle, moved them onto the grass, and cut them down to four spots that each hold a proper note instead of a single fact. The lesson: check your art at the size and in the place people will actually see it.
 
 **The purple colour scheme looked generic.** The first version was lavender and purple everywhere, like a generated landing page. I re-coloured the whole site (CSS, every SVG illustration, the favicon) into midnight brown-black, pumpkin orange, bone white and witch-hat green.
 
